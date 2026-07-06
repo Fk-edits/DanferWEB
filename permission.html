@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Danfer School – Permission Request</title>
+
+  <!-- Read saved theme immediately -->
+  <script>
+    (function(){
+      var theme = localStorage.getItem('danfer_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- DOMPurify for XSS prevention -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+
+  <!-- Theme -->
+  <link rel="stylesheet" href="theme.css">
+
+  <style>
+    /* ===== LOCAL STYLES ===== */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--color-background);
+      color: var(--color-text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .permission-card {
+      background: var(--color-card);
+      border: 1px solid rgba(26, 58, 92, 0.06);
+      border-radius: 20px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.04);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    [data-theme="dark"] .permission-card {
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+    }
+    .logo {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 24px;
+      color: var(--color-primary);
+      letter-spacing: -0.5px;
+    }
+    [data-theme="dark"] .logo {
+      color: var(--color-text-primary);
+    }
+    .logo i {
+      color: var(--color-accent);
+      margin-right: 6px;
+    }
+    .form-group { margin-bottom: 16px; }
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(26, 58, 92, 0.1);
+      background: var(--color-background);
+      color: var(--color-text-primary);
+      font-size: 0.9rem;
+      font-family: 'Inter', system-ui, sans-serif;
+      outline: none;
+      transition: all 0.3s;
+    }
+    [data-theme="dark"] input,
+    [data-theme="dark"] select,
+    [data-theme="dark"] textarea {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 4px rgba(26, 58, 92, 0.08);
+    }
+    [data-theme="dark"] input:focus,
+    [data-theme="dark"] select:focus,
+    [data-theme="dark"] textarea:focus {
+      box-shadow: 0 0 0 4px rgba(245, 197, 66, 0.08);
+    }
+    textarea { resize: vertical; min-height: 60px; }
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 50px;
+      background: var(--color-primary);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      font-family: 'Inter', system-ui, sans-serif;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(26, 58, 92, 0.2);
+    }
+    [data-theme="dark"] .btn-primary {
+      background: var(--color-accent);
+      color: var(--color-primary);
+      box-shadow: 0 4px 16px rgba(245, 197, 66, 0.2);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(26, 58, 92, 0.3);
+    }
+    [data-theme="dark"] .btn-primary:hover {
+      box-shadow: 0 8px 24px rgba(245, 197, 66, 0.3);
+    }
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    .message {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      text-align: center;
+      min-height: 24px;
+      font-weight: 500;
+    }
+    .message.success { color: var(--color-green); }
+    .message.error { color: var(--color-red); }
+    .remaining {
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      text-align: center;
+      margin-top: 6px;
+    }
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      padding: 40px 20px;
+      color: var(--color-text-secondary);
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(26, 58, 92, 0.1);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    [data-theme="dark"] .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.08);
+      border-top-color: var(--color-accent);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hidden { display: none !important; }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      letter-spacing: -0.3px;
+    }
+    .footer-note {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.75rem;
+      color: var(--color-text-secondary);
+      opacity: 0.7;
+    }
+    @media (max-width: 480px) {
+      .permission-card { padding: 24px 16px; }
+      .logo { font-size: 1.5rem; }
+      h2 { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="permission-card">
+    <div class="logo"><i class="fa-solid fa-file-signature"></i> Danfer</div>
+
+    <div id="loading-screen" class="loading">
+      <div class="spinner"></div>
+      <p>Checking eligibility…</p>
+    </div>
+
+    <form id="permission-form" class="hidden">
+      <h2>Request Permission</h2>
+
+      <div class="form-group">
+        <label for="student-name">Full Name</label>
+        <input type="text" id="student-name" placeholder="Your full name" required aria-required="true">
+      </div>
+
+      <div class="form-group">
+        <label for="grade-select">Grade</label>
+        <select id="grade-select" required aria-required="true">
+          <option value="">Select Grade</option>
+          <option value="9">Grade 9</option>
+          <option value="10">Grade 10</option>
+          <option value="11">Grade 11</option>
+          <option value="12">Grade 12</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="section-select">Section</label>
+        <select id="section-select" required aria-required="true"></select>
+      </div>
+
+      <div class="form-group">
+        <label for="reason">Reason <span style="font-weight:400;text-transform:none;opacity:0.6;">(optional)</span></label>
+        <textarea id="reason" rows="2" placeholder="Short reason for permission…"></textarea>
+      </div>
+
+      <div class="remaining" id="remaining-display"></div>
+
+      <button type="submit" class="btn-primary" id="submit-btn">
+        <i class="fa-solid fa-paper-plane"></i> Submit Request
+      </button>
+
+      <p class="message" id="form-message"></p>
+      <div class="footer-note">You can submit up to 3 requests per month.</div>
+    </form>
+  </div>
+
+  <script type="module">
+    import { auth, db } from './firebase-config.js';
+    import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+    import { collection, addDoc, query, where, getDocs, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+    const $ = s => document.querySelector(s);
+
+    // Populate sections A-Z
+    const sectionSelect = document.getElementById('section-select');
+    if (sectionSelect) {
+      let options = '';
+      for (let i = 65; i <= 90; i++) {
+        const letter = String.fromCharCode(i);
+        options += `<option value="${letter}">${letter}</option>`;
+      }
+      sectionSelect.innerHTML = options;
+    }
+
+    let currentUser = null;
+    const MAX_REQUESTS_PER_MONTH = 3;
+
+    onAuthStateChanged(auth, async (user) => {
+      const loadingScreen = document.getElementById('loading-screen');
+      const form = document.getElementById('permission-form');
+
+      if (!user) {
+        loadingScreen.innerHTML = `
+          <p style="color:var(--color-text-secondary);">
+            <i class="fa-solid fa-lock" style="font-size:2rem;display:block;margin-bottom:12px;"></i>
+            Please log in to submit a permission request.
+          </p>
+          <button class="btn-primary" style="width:auto;padding:10px 28px;margin-top:8px;" onclick="window.location.href='login.html'">
+            <i class="fa-solid fa-arrow-right"></i> Sign In
+          </button>
+        `;
+        return;
+      }
+
+      currentUser = user;
+      loadingScreen.classList.add('hidden');
+      form.classList.remove('hidden');
+
+      try {
+        const now = new Date();
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+        const requestsQ = query(
+          collection(db, "permissions"),
+          where("uid", "==", user.uid),
+          where("timestamp", ">=", startOfMonth)
+        );
+        const requestsSnap = await getDocs(requestsQ);
+        const requestCount = requestsSnap.size;
+        const remaining = MAX_REQUESTS_PER_MONTH - requestCount;
+        const remainingDisplay = document.getElementById('remaining-display');
+        if (remainingDisplay) {
+          remainingDisplay.textContent = `You have ${Math.max(remaining, 0)} request(s) remaining this month.`;
+        }
+
+        if (remaining <= 0) {
+          document.getElementById('submit-btn').disabled = true;
+          document.getElementById('form-message').textContent = 'You have reached the maximum number of requests for this month.';
+          document.getElementById('form-message').className = 'message error';
+        }
+      } catch (err) {
+        console.warn('Could not fetch remaining requests. Assuming 0 used.');
+        document.getElementById('remaining-display').textContent = '';
+      }
+    });
+
+    // ===== FORM SUBMISSION =====
+    document.getElementById('permission-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!currentUser) {
+        document.getElementById('form-message').textContent = 'You must be logged in.';
+        document.getElementById('form-message').className = 'message error';
+        return;
+      }
+
+      const nameInput = document.getElementById('student-name');
+      const gradeSelect = document.getElementById('grade-select');
+      const sectionSelect = document.getElementById('section-select');
+      const reasonInput = document.getElementById('reason');
+      const msgEl = document.getElementById('form-message');
+
+      const name = nameInput.value.trim();
+      const grade = gradeSelect.value;
+      const section = sectionSelect.value;
+      const reason = reasonInput.value.trim();
+
+      // Validation
+      if (!name || !grade || !section) {
+        msgEl.textContent = 'Please fill in all required fields.';
+        msgEl.className = 'message error';
+        return;
+      }
+
+      // Name validation: letters, spaces, hyphens, apostrophes, 2-50 chars
+      if (!/^[a-zA-Z\s\-']{2,50}$/.test(name)) {
+        msgEl.textContent = 'Please enter a valid name (letters, spaces, hyphens, apostrophes only, 2-50 characters).';
+        msgEl.className = 'message error';
+        return;
+      }
+
+      if (reason.length > 500) {
+        msgEl.textContent = 'Reason must be less than 500 characters.';
+        msgEl.className = 'message error';
+        return;
+      }
+
+      // Sanitize inputs (DOMPurify loaded via CDN)
+      const sanitizedName = DOMPurify.sanitize(name);
+      const sanitizedReason = DOMPurify.sanitize(reason);
+
+      // Optional double-check remaining limit
+      try {
+        const now = new Date();
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+        const requestsQ = query(
+          collection(db, "permissions"),
+          where("uid", "==", currentUser.uid),
+          where("timestamp", ">=", startOfMonth)
+        );
+        const requestsSnap = await getDocs(requestsQ);
+        if (requestsSnap.size >= MAX_REQUESTS_PER_MONTH) {
+          msgEl.textContent = 'You have already used all your requests for this month.';
+          msgEl.className = 'message error';
+          return;
+        }
+      } catch (readErr) {
+        console.warn('Could not check remaining requests, allowing submission.');
+      }
+
+      // Submit
+      try {
+        await addDoc(collection(db, "permissions"), {
+          uid: currentUser.uid,
+          studentName: sanitizedName,
+          grade,
+          section,
+          reason: sanitizedReason,
+          status: 'pending',
+          timestamp: serverTimestamp()
+        });
+
+        msgEl.textContent = '✅ Request submitted successfully!';
+        msgEl.className = 'message success';
+        nameInput.value = '';
+        gradeSelect.value = '';
+        sectionSelect.value = '';
+        reasonInput.value = '';
+
+        // Update remaining count
+        try {
+          const now = new Date();
+          const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+          const requestsQ = query(
+            collection(db, "permissions"),
+            where("uid", "==", currentUser.uid),
+            where("timestamp", ">=", startOfMonth)
+          );
+          const requestsSnap = await getDocs(requestsQ);
+          const newCount = requestsSnap.size;
+          const remaining = MAX_REQUESTS_PER_MONTH - newCount;
+          const remDisplay = document.getElementById('remaining-display');
+          if (remDisplay) {
+            remDisplay.textContent = `You have ${Math.max(remaining, 0)} request(s) remaining this month.`;
+          }
+          if (remaining <= 0) {
+            document.getElementById('submit-btn').disabled = true;
+          }
+        } catch (e) {
+          console.warn('Could not update remaining count');
+        }
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = 'Failed to submit request. Please try again.';
+        msgEl.className = 'message error';
+      }
+    });
+  </script>
+</body>
+</html>

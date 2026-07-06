@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Danfer School – Development</title>
+
+  <!-- Read saved theme -->
+  <script>
+    (function(){
+      var theme = localStorage.getItem('danfer_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Theme -->
+  <link rel="stylesheet" href="theme.css">
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--color-background);
+      color: var(--color-text-primary);
+      min-height: 100vh;
+      padding: 40px 20px;
+      transition: background 0.4s, color 0.4s;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .header h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent), var(--color-primary));
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 6s ease infinite;
+      margin-bottom: 8px;
+    }
+    .header h1 i {
+      -webkit-text-fill-color: transparent;
+      margin-right: 4px;
+    }
+    .header p {
+      color: var(--color-text-secondary);
+      font-size: 1.15rem;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* ===== CARDS (premium) ===== */
+    .card {
+      background: var(--color-card);
+      border: 1px solid rgba(26, 58, 92, 0.06);
+      border-radius: 24px;
+      padding: 32px 36px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    [data-theme="dark"] .card {
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
+      border-color: var(--color-accent);
+    }
+    [data-theme="dark"] .card:hover {
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+    }
+
+    .card h2 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--color-text-primary);
+      letter-spacing: -0.3px;
+    }
+    .card h2 i {
+      color: var(--color-accent);
+      font-size: 1.4rem;
+      background: none;
+      -webkit-text-fill-color: var(--color-accent);
+    }
+    [data-theme="dark"] .card h2 i {
+      -webkit-text-fill-color: var(--color-accent);
+    }
+
+    /* ===== DEVELOPER INFO ===== */
+    .dev-info {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .dev-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 8px 32px rgba(26, 58, 92, 0.25);
+    }
+    [data-theme="dark"] .dev-avatar {
+      box-shadow: 0 8px 32px rgba(245, 197, 66, 0.15);
+    }
+    .dev-details { flex: 1; }
+    .dev-details p {
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+    .dev-details strong {
+      color: var(--color-text-primary);
+      font-weight: 600;
+    }
+    .dev-details .bio {
+      color: var(--color-text-secondary);
+      margin-top: 8px;
+      font-size: 0.95rem;
+      border-left: 3px solid var(--color-accent);
+      padding-left: 14px;
+    }
+
+    /* ===== FEATURES GRID ===== */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .feature-item {
+      background: var(--color-background);
+      border: 1px solid rgba(26, 58, 92, 0.06);
+      border-radius: 16px;
+      padding: 22px 16px;
+      text-align: center;
+      transition: all 0.3s;
+      cursor: default;
+    }
+    [data-theme="dark"] .feature-item {
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .feature-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+      border-color: var(--color-accent);
+    }
+    [data-theme="dark"] .feature-item:hover {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    .feature-item i {
+      font-size: 2.4rem;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .feature-item h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--color-text-primary);
+    }
+    .feature-item p {
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ===== TOOLS GRID ===== */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
+    .tool-item {
+      background: var(--color-background);
+      border: 1px solid rgba(26, 58, 92, 0.06);
+      border-radius: 14px;
+      padding: 18px 12px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    [data-theme="dark"] .tool-item {
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .tool-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--color-accent);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+    }
+    [data-theme="dark"] .tool-item:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+    .tool-item i {
+      font-size: 1.8rem;
+      color: var(--color-primary);
+      margin-bottom: 6px;
+      display: block;
+    }
+    [data-theme="dark"] .tool-item i {
+      color: var(--color-accent);
+    }
+    .tool-item span {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* ===== TIMELINE ===== */
+    .timeline {
+      position: relative;
+      padding-left: 50px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 22px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: rgba(26, 58, 92, 0.12);
+      border-radius: 3px;
+    }
+    [data-theme="dark"] .timeline::before {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 32px;
+      transition: all 0.3s;
+    }
+    .timeline-item .pin {
+      position: absolute;
+      left: -36px;
+      top: 8px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      border: 4px solid var(--color-background);
+      z-index: 2;
+      box-shadow: 0 0 0 5px rgba(26, 58, 92, 0.1);
+      transition: all 0.3s;
+    }
+    [data-theme="dark"] .timeline-item .pin {
+      background: var(--color-accent);
+      box-shadow: 0 0 0 5px rgba(245, 197, 66, 0.15);
+    }
+    .timeline-item:hover .pin {
+      transform: scale(1.2);
+      box-shadow: 0 0 0 10px rgba(26, 58, 92, 0.08);
+    }
+    [data-theme="dark"] .timeline-item:hover .pin {
+      box-shadow: 0 0 0 10px rgba(245, 197, 66, 0.1);
+    }
+    .timeline-card {
+      background: var(--color-card);
+      border: 1px solid rgba(26, 58, 92, 0.06);
+      border-radius: 16px;
+      padding: 20px 24px;
+      transition: all 0.3s;
+    }
+    [data-theme="dark"] .timeline-card {
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .timeline-card:hover {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+      border-color: var(--color-accent);
+    }
+    [data-theme="dark"] .timeline-card:hover {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    .timeline-card h3 {
+      color: var(--color-primary);
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+    [data-theme="dark"] .timeline-card h3 {
+      color: var(--color-accent);
+    }
+    .timeline-card p {
+      color: var(--color-text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* ===== ACKNOWLEDGEMENTS ===== */
+    .acknowledgement-card {
+      background: var(--color-card);
+      border: 1px solid rgba(26, 58, 92, 0.06);
+      border-left: 6px solid var(--color-accent);
+      border-radius: 0 24px 24px 0;
+      padding: 32px 36px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+      position: relative;
+      transition: all 0.35s;
+    }
+    [data-theme="dark"] .acknowledgement-card {
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-left: 6px solid var(--color-accent);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    }
+    .acknowledgement-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.06);
+    }
+    [data-theme="dark"] .acknowledgement-card:hover {
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+    }
+    .acknowledgement-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 6rem;
+      color: var(--color-accent);
+      opacity: 0.1;
+      font-family: serif;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .acknowledgement-card h2 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: var(--color-text-primary);
+      position: relative;
+      z-index: 1;
+    }
+    .acknowledgement-card h2 i {
+      color: var(--color-accent);
+      font-size: 1.3rem;
+    }
+    .acknowledgement-card p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--color-text-secondary);
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    .acknowledgement-card p strong {
+      color: var(--color-text-primary);
+      font-weight: 600;
+    }
+
+    /* ===== NEXORA FOOTER ===== */
+    .nexora-footer {
+      margin-top: 40px;
+      text-align: center;
+      padding: 36px 24px;
+      background: linear-gradient(135deg, rgba(26, 58, 92, 0.04), rgba(245, 197, 66, 0.04));
+      border: 1px solid rgba(26, 58, 92, 0.06);
+      border-radius: 24px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: all 0.3s;
+    }
+    [data-theme="dark"] .nexora-footer {
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: linear-gradient(135deg, rgba(15, 26, 46, 0.5), rgba(245, 197, 66, 0.05));
+    }
+    .nexora-footer:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+    }
+    .nexora-footer img {
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      object-fit: cover;
+    }
+    .nexora-footer h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nexora-footer p {
+      color: var(--color-text-secondary);
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+    .nexora-telegram {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #0088cc;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      margin-top: 16px;
+      box-shadow: 0 4px 16px rgba(0, 136, 204, 0.25);
+    }
+    .nexora-telegram:hover {
+      background: #0077b5;
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 32px rgba(0, 136, 204, 0.35);
+    }
+    .nexora-telegram i {
+      font-size: 1.2rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      body { padding: 24px 16px; }
+      .header h1 { font-size: 2.2rem; }
+      .card { padding: 24px 20px; }
+      .dev-info { flex-direction: column; align-items: flex-start; }
+      .dev-avatar { width: 72px; height: 72px; font-size: 1.8rem; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .tools-grid { grid-template-columns: repeat(3, 1fr); }
+      .timeline { padding-left: 40px; }
+      .timeline::before { left: 16px; }
+      .pin { left: -30px; width: 20px; height: 20px; }
+      .acknowledgement-card { padding: 24px 20px; }
+    }
+    @media (max-width: 500px) {
+      .header h1 { font-size: 1.8rem; }
+      .card h2 { font-size: 1.2rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .tools-grid { grid-template-columns: repeat(2, 1fr); }
+      .nexora-footer { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1><i class="fa-solid fa-code"></i> Danfer Development</h1>
+      <p>The story behind the Smart Academic School System</p>
+    </div>
+
+    <!-- Developer Card -->
+    <div class="card">
+      <h2><i class="fa-solid fa-user-gear"></i> Developer</h2>
+      <div class="dev-info">
+        <div class="dev-avatar">
+          <i class="fa-solid fa-user-astronaut"></i>
+        </div>
+        <div class="dev-details">
+          <p><strong>Name:</strong> Fikir Habtamu</p>
+          <p><strong>Role:</strong> Full‑Stack Developer &amp; Founder of NeXORA</p>
+          <p><strong>Contact:</strong> fikirhabtamu2@gmail.com</p>
+          <div class="bio">
+            Educator turned developer. I built Danfer to replace paper‑based school management with a smart, affordable platform. Every line of code was written with love for Ethiopian schools. 🇪🇹
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advanced Features -->
+    <div class="card">
+      <h2><i class="fa-solid fa-star"></i> Advanced Features</h2>
+      <div class="features-grid">
+        <div class="feature-item">
+          <i class="fa-solid fa-robot"></i>
+          <h4>AI Assistant</h4>
+          <p>24/7 school helper powered by OpenRouter (supports multiple free models).</p>
+        </div>
+        <div class="feature-item">
+          <i class="fa-solid fa-paint-brush"></i>
+          <h4>Dark/Light Themes</h4>
+          <p>Auto‑saving theme with glassmorphism and smooth transitions.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fa-solid fa-file-pdf"></i>
+          <h4>PDF &amp; Excel</h4>
+          <p>Export student cards, class lists, and marks with one click.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fa-solid fa-comments"></i>
+          <h4>Real‑time Chat</h4>
+          <p>Live school‑wide messaging with admin moderation.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fa-solid fa-chart-line"></i>
+          <h4>Ranking &amp; Stats</h4>
+          <p>Automatic class rank, subject averages, and visual charts.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fa-solid fa-gamepad"></i>
+          <h4>Games</h4>
+          <p>Built‑in Tic‑Tac‑Toe, Car Dodger, and Math Challenge for students.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fa-solid fa-shield-halved"></i>
+          <h4>Secure API Keys</h4>
+          <p>No sensitive keys in client‑side code – stored safely in Firestore.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fa-solid fa-globe"></i>
+          <h4>Multilingual</h4>
+          <p>English, Amharic, and Oromo support throughout the platform.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tools & Technologies -->
+    <div class="card">
+      <h2><i class="fa-solid fa-toolbox"></i> Tools &amp; Technologies</h2>
+      <div class="tools-grid">
+        <div class="tool-item"><i class="fa-brands fa-html5"></i> HTML5 <span>Structure</span></div>
+        <div class="tool-item"><i class="fa-brands fa-css3-alt"></i> CSS3 <span>Glassmorphism</span></div>
+        <div class="tool-item"><i class="fa-brands fa-js"></i> JavaScript <span>Interactivity</span></div>
+        <div class="tool-item"><i class="fa-solid fa-fire"></i> Firebase <span>Auth &amp; Firestore</span></div>
+        <div class="tool-item"><i class="fa-solid fa-chart-bar"></i> Chart.js <span>Statistics</span></div>
+        <div class="tool-item"><i class="fa-solid fa-file-pdf"></i> jsPDF <span>PDF Export</span></div>
+        <div class="tool-item"><i class="fa-solid fa-file-excel"></i> SheetJS <span>Excel Import</span></div>
+        <div class="tool-item"><i class="fa-solid fa-font-awesome"></i> Font Awesome <span>Icons</span></div>
+        <div class="tool-item"><i class="fa-solid fa-robot"></i> OpenRouter <span>AI Models</span></div>
+        <div class="tool-item"><i class="fa-brands fa-github"></i> GitHub <span>Hosting &amp; CI</span></div>
+      </div>
+    </div>
+
+    <!-- Development Progress Timeline -->
+    <div class="card">
+      <h2><i class="fa-solid fa-timeline"></i> Development Timeline</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="pin"></div>
+          <div class="timeline-card">
+            <h3>Phase 1 – Foundation 🏗️</h3>
+            <p>Concept, Firebase setup, authentication, dark/light theme, responsive layout, and the home page. Built the core structure that everything else stands on.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="pin"></div>
+          <div class="timeline-card">
+            <h3>Phase 2 – User Management 👥</h3>
+            <p>Admin, teacher, and student dashboards. Role‑based access control, class &amp; subject management, and teacher code system.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="pin"></div>
+          <div class="timeline-card">
+            <h3>Phase 3 – Core Features ⚙️</h3>
+            <p>Permission requests, announcements, real‑time chat, result checking, class ranking, and PDF/Excel exports. The platform became truly useful.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="pin"></div>
+          <div class="timeline-card">
+            <h3>Phase 4 – AI &amp; Smart Tools 🤖</h3>
+            <p>Integrated the AI assistant with dynamic API key storage (no hardcoded keys!), added games, and polished the glassmorphism UI.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="pin"></div>
+          <div class="timeline-card">
+            <h3>Phase 5 – Security &amp; Hardening 🔒</h3>
+            <p>Fixed Firestore rules, secured API keys behind admin panel, danger zone reset, and bug‑fixing marathon. All files cleaned for production.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="pin"></div>
+          <div class="timeline-card">
+            <h3>Phase 6 – Launch &amp; Beyond 🚀</h3>
+            <p>Hosted on GitHub, deployed globally, and continuously improved based on user feedback. Next: mobile app with React Native?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acknowledgements -->
+    <div class="acknowledgement-card">
+      <h2><i class="fa-solid fa-heart"></i> Acknowledgements</h2>
+      <p>“First and foremost, I thank <strong>GOD</strong> for the wisdom, strength, and guidance throughout this journey. Without His grace, nothing would be possible.</p>
+      <p>I am deeply grateful to <strong>my teacher</strong> who entrusted us with this project and inspired us to push beyond our limits. Your belief in us made Danfer a reality.</p>
+      <p>To <strong>my family</strong> – thank you for your endless patience, encouragement, and love. You are my foundation.</p>
+      <p>And a special shout‑out to <strong>Speed</strong> – your help, motivation, and late‑night debug sessions kept this project alive. You’re a legend.”</p>
+    </div>
+
+    <!-- Powered by Nexora -->
+    <div class="nexora-footer">
+      <img src="dev.png" alt="Nexora Logo" onerror="this.style.display='none'">
+      <h3>Powered by Nexora</h3>
+      <p>Innovative digital solutions for education</p>
+      <a href="https://t.me/nexoraET" target="_blank" class="nexora-telegram">
+        <i class="fa-brands fa-telegram"></i> @nexoraET
+      </a>
+    </div>
+
+    <!-- NO BACK BUTTON – removed as requested -->
+  </div>
+</body>
+</html>

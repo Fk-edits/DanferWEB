@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Danfer School – Coming Soon</title>
+
+  <!-- Read saved theme immediately -->
+  <script>
+    (function(){
+      var theme = localStorage.getItem('danfer_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Theme -->
+  <link rel="stylesheet" href="theme.css">
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--color-background);
+      color: var(--color-text-primary);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .container {
+      position: relative;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* ============ MORPHING ORB ============ */
+    .orb {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 40px;
+    }
+
+    .orb-core {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, var(--color-primary), var(--color-accent));
+      box-shadow: 0 0 60px rgba(26, 58, 92, 0.25), 0 0 120px rgba(245, 197, 66, 0.15);
+      animation: morphOrb 4s ease-in-out infinite;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    [data-theme="dark"] .orb-core {
+      box-shadow: 0 0 60px rgba(245, 197, 66, 0.2), 0 0 120px rgba(245, 197, 66, 0.1);
+    }
+
+    @keyframes morphOrb {
+      0%, 100% {
+        border-radius: 50% 50% 50% 50%;
+        transform: scale(1) rotate(0deg);
+      }
+      25% {
+        border-radius: 60% 40% 60% 40%;
+        transform: scale(1.2) rotate(90deg);
+      }
+      50% {
+        border-radius: 40% 60% 40% 60%;
+        transform: scale(1.1) rotate(180deg);
+      }
+      75% {
+        border-radius: 55% 45% 55% 45%;
+        transform: scale(1.15) rotate(270deg);
+      }
+    }
+
+    /* ============ ORBITING PARTICLES ============ */
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      animation: orbit 3s linear infinite;
+      box-shadow: 0 0 8px var(--color-accent);
+    }
+    .particle:nth-child(1) { animation-delay: 0s; }
+    .particle:nth-child(2) { animation-delay: -0.75s; }
+    .particle:nth-child(3) { animation-delay: -1.5s; }
+    .particle:nth-child(4) { animation-delay: -2.25s; }
+
+    @keyframes orbit {
+      0% {
+        transform: rotate(0deg) translateX(80px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: rotate(360deg) translateX(80px) rotate(-360deg);
+        opacity: 0.4;
+      }
+    }
+
+    /* ============ LOGO INSIDE ORB ============ */
+    .orb-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.4rem;
+      color: #fff;
+      z-index: 2;
+      animation: pulseText 2s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+    [data-theme="dark"] .orb-logo {
+      text-shadow: 0 0 30px rgba(245, 197, 66, 0.3);
+    }
+
+    @keyframes pulseText {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.1); }
+    }
+
+    /* ============ PROGRESS BAR ============ */
+    .progress-track {
+      width: 260px;
+      height: 4px;
+      background: rgba(26, 58, 92, 0.1);
+      border-radius: 4px;
+      margin: 0 auto 24px;
+      overflow: hidden;
+    }
+    [data-theme="dark"] .progress-track {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+      border-radius: 4px;
+      animation: fillBar 2.5s ease-out forwards;
+    }
+
+    @keyframes fillBar {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    /* ============ TEXT REVEAL ============ */
+    .coming-text {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 2.7s forwards;
+      margin-bottom: 8px;
+    }
+
+    .sub-text {
+      color: var(--color-text-secondary);
+      font-size: 1rem;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 3s forwards;
+      margin-bottom: 0;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 480px) {
+      .orb {
+        width: 90px;
+        height: 90px;
+        margin-bottom: 30px;
+      }
+      .orb-logo {
+        font-size: 1.8rem;
+      }
+      .particle {
+        width: 4px;
+        height: 4px;
+      }
+      @keyframes orbit {
+        0% { transform: rotate(0deg) translateX(60px) rotate(0deg); }
+        100% { transform: rotate(360deg) translateX(60px) rotate(-360deg); }
+      }
+      .coming-text {
+        font-size: 1.5rem;
+      }
+      .sub-text {
+        font-size: 0.85rem;
+      }
+      .progress-track {
+        width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Morphing orb with particles and logo -->
+    <div class="orb">
+      <div class="orb-core"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="orb-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+    </div>
+
+    <!-- Loading bar -->
+    <div class="progress-track">
+      <div class="progress-fill"></div>
+    </div>
+
+    <!-- Reveal text after animation -->
+    <h1 class="coming-text">Something amazing is on the way</h1>
+    <p class="sub-text">We're building the future of education. Stay tuned!</p>
+
+    <!-- Back button removed as requested -->
+  </div>
+</body>
+</html>
