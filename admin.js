@@ -1,9 +1,9 @@
 import { auth, db } from './firebase-config.js';
-import { onAuthStateChanged, signOut, updatePassword } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+import { onAuthStateChanged, signOut, updatePassword } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js';
 import {
   collection, addDoc, getDocs, query, where, orderBy, doc, getDoc, deleteDoc,
   updateDoc, setDoc, writeBatch
-} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+} from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js';
 
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
@@ -11,12 +11,13 @@ const $$ = s => document.querySelectorAll(s);
 // ==================== THEME ====================
 const savedTheme = localStorage.getItem('danfer_theme') || 'dark';
 document.documentElement.setAttribute('data-theme', savedTheme);
-const updateThemeIcon = () => {
+
+function updateThemeIcon() {
   const icon = document.querySelector('#theme-toggle i');
   if (!icon) return;
   const current = document.documentElement.getAttribute('data-theme');
   icon.className = current === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-};
+}
 updateThemeIcon();
 
 document.getElementById('theme-toggle').addEventListener('click', () => {
@@ -34,6 +35,7 @@ onAuthStateChanged(auth, async (user) => {
   }, 3000);
 
   if (!user) { window.location.href = 'login.html'; return; }
+
   try {
     const q = query(collection(db, "admins"), where("uid", "==", user.uid), where("role", "==", "admin"));
     const snap = await getDocs(q);
@@ -79,7 +81,6 @@ function showSection(section) {
 
 // ==================== HELPER ====================
 async function createAuthUser(email, password) {
-  // Uses Firebase auth client SDK to create user
   try {
     const userCred = await createUserWithEmailAndPassword(auth, email, password);
     return userCred.user.uid;
@@ -109,11 +110,10 @@ async function loadDashboard() {
   } catch (err) { console.error(err); }
 }
 
-// ==================== STATISTICS (with Top Students) ====================
+// ==================== STATISTICS ====================
 async function loadStatistics() {
   try {
     const styles = getComputedStyle(document.documentElement);
-    // Use new CSS variable names
     const primary = styles.getPropertyValue('--color-primary').trim() || '#1A3A5C';
     const accent = styles.getPropertyValue('--color-accent').trim() || '#E8A838';
     const textColor = styles.getPropertyValue('--color-text-secondary').trim() || '#475569';
@@ -123,7 +123,6 @@ async function loadStatistics() {
     const pink = styles.getPropertyValue('--color-pink').trim() || '#EC4899';
     const purple = styles.getPropertyValue('--color-purple').trim() || '#7C3AED';
 
-    // Prepare top students data
     const marksSnapAll = await getDocs(collection(db, "marks"));
     const studentTotalMarks = {};
     marksSnapAll.forEach(m => {
@@ -132,7 +131,6 @@ async function loadStatistics() {
       studentTotalMarks[d.studentId] += d.score;
     });
 
-    // Get student names
     const studentsSnapAll = await getDocs(collection(db, "students"));
     const studentNames = {};
     studentsSnapAll.forEach(doc => {
@@ -140,7 +138,6 @@ async function loadStatistics() {
       studentNames[s.studentId || doc.id] = s.name || s.studentId;
     });
 
-    // Build sorted list of top 5
     const topStudents = Object.entries(studentTotalMarks)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 5)
@@ -160,7 +157,6 @@ async function loadStatistics() {
       topStudentsHtml += '</ol>';
     }
 
-    // Render charts & top students card
     $('#admin-main').innerHTML = `
       <h2 class="section-title">Statistics</h2>
       <div class="card"><h3>Teachers per Subject</h3><div class="chart-container"><canvas id="teacherChart" height="200"></canvas></div></div>
@@ -171,7 +167,6 @@ async function loadStatistics() {
       </div>
     `;
 
-    // Teacher chart
     const tSnap = await getDocs(collection(db, "teachers"));
     const subjCounts = {};
     tSnap.forEach(doc => {
@@ -184,7 +179,6 @@ async function loadStatistics() {
       options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { color: textColor } } } }
     });
 
-    // Student chart
     const sSnap = await getDocs(collection(db, "students"));
     const gradeCounts = {};
     sSnap.forEach(doc => {
@@ -199,7 +193,7 @@ async function loadStatistics() {
   } catch (err) { console.error(err); }
 }
 
-// ==================== TEACHERS (unchanged) ====================
+// ==================== TEACHERS ====================
 async function loadTeachersSection() {
   try {
     const tSnap = await getDocs(collection(db, "teachers"));
@@ -345,7 +339,7 @@ async function showAddTeacherForm() {
   });
 }
 
-// ==================== STUDENTS (unchanged) ====================
+// ==================== STUDENTS ====================
 async function loadStudentsSection() {
   try {
     const sSnap = await getDocs(collection(db, "students"));
@@ -391,7 +385,7 @@ async function loadStudentsSection() {
   } catch (err) { console.error(err); }
 }
 
-// ==================== SUBJECTS (unchanged) ====================
+// ==================== SUBJECTS ====================
 async function loadSubjectsSection() {
   try {
     const subjectsSnap = await getDocs(collection(db, "subjects"));
@@ -438,7 +432,7 @@ async function loadSubjectsSection() {
   } catch (err) { console.error(err); }
 }
 
-// ==================== GROUPS (CLASSES) (unchanged) ====================
+// ==================== GROUPS ====================
 async function loadGroupsSection() {
   try {
     let sectionOptions = '';
@@ -842,7 +836,7 @@ async function openStudentEditModal(docId) {
   };
 }
 
-// ==================== ANNOUNCEMENTS (unchanged) ====================
+// ==================== ANNOUNCEMENTS ====================
 async function loadAnnouncementsSection() {
   try {
     let html = `<h2 class="section-title">Announcements</h2>`;
@@ -872,7 +866,7 @@ async function loadAnnouncementsSection() {
   } catch (err) { console.error(err); }
 }
 
-// ==================== PERMISSIONS (unchanged) ====================
+// ==================== PERMISSIONS ====================
 async function loadPermissionsSection() {
   try {
     let html = `<h2 class="section-title">Permission Requests</h2>`;
@@ -915,7 +909,7 @@ async function loadPermissionsSection() {
   }
 }
 
-// ==================== SETTINGS (with API key + Danger Zone fix) ====================
+// ==================== SETTINGS ====================
 async function loadSettingsSection() {
   const adminEmail = auth.currentUser?.email || 'Unknown';
   $('#admin-main').innerHTML = `
@@ -935,7 +929,6 @@ async function loadSettingsSection() {
     <div class="card"><h3>Danger Zone</h3><button class="btn-primary btn-danger" id="reset-firestore-btn"><i class="fa-solid fa-trash"></i> Reset Data</button><p class="msg" id="reset-msg"></p></div>
   `;
 
-  // Load current API key
   try {
     const docSnap = await getDoc(doc(db, "settings", "api_keys"));
     if (docSnap.exists()) {
@@ -945,7 +938,6 @@ async function loadSettingsSection() {
     console.error(e);
   }
 
-  // Save API key
   $('#save-api-key-btn').addEventListener('click', async () => {
     const key = $('#openrouter-key').value.trim();
     const msg = $('#api-key-msg');
@@ -964,7 +956,6 @@ async function loadSettingsSection() {
     }
   });
 
-  // Theme toggle
   document.getElementById('toggle-theme-btn').addEventListener('click', () => {
     const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', newTheme);
@@ -972,7 +963,6 @@ async function loadSettingsSection() {
     updateThemeIcon();
   });
 
-  // Change password
   $('#change-password-btn').addEventListener('click', async () => {
     const newPass = $('#new-password').value.trim();
     const msg = $('#password-msg');
@@ -983,7 +973,6 @@ async function loadSettingsSection() {
     } catch (e) { msg.textContent = e.message; msg.className = 'msg error'; }
   });
 
-  // Danger Zone – clear all except admins
   $('#reset-firestore-btn').addEventListener('click', async () => {
     if (!confirm('Delete ALL data except admin accounts? This cannot be undone.')) return;
 
@@ -1017,5 +1006,4 @@ async function loadSettingsSection() {
   });
 }
 
-// Keep modal close function accessible
 window.closeModal = (id) => document.getElementById(id)?.classList.remove('active');
