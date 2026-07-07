@@ -399,14 +399,13 @@
   <script type="module">
     // ==================== IMPORTS ====================
     import { auth, db } from './firebase-config.js';
-
     import {
       signInWithEmailAndPassword,
       createUserWithEmailAndPassword,
       signInWithPopup,
-      GoogleAuthProvider
+      GoogleAuthProvider,
+      signOut
     } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
-
     import {
       collection,
       query,
@@ -554,6 +553,10 @@
       return emailRegex.test(email);
     }
 
+    function isValidPassword(password) {
+      return password.length >= 6;
+    }
+
     function sanitizeInput(str) {
       const div = document.createElement('div');
       div.textContent = str;
@@ -575,7 +578,12 @@
       }
 
       if (!isValidEmail(email)) {
-        errorEl.textContent = 'Please enter a valid email address.';
+        errorEl.textContent = '❌ Please enter a valid email address.';
+        return;
+      }
+
+      if (!isValidPassword(password)) {
+        errorEl.textContent = '❌ Password must be at least 6 characters.';
         return;
       }
 
@@ -594,7 +602,10 @@
             return;
           }
 
+          // Create the user
           const userCred = await createUserWithEmailAndPassword(auth, email, password);
+
+          // Add student document
           await addDoc(collection(db, "students"), {
             uid: userCred.user.uid,
             email: email,
@@ -602,31 +613,35 @@
             subject: studentSubject || '',
             class: studentClass || ''
           });
+
+          // Redirect to home
           window.location.href = 'index.html';
         } else {
+          // Sign In
           const userCred = await signInWithEmailAndPassword(auth, email, password);
           await handleRoleRedirect(userCred.user.uid);
         }
       } catch (err) {
-  console.warn('Auth error:', err.code);
-  if (err.code === 'auth/email-already-in-use') {
-    errorEl.textContent = '❌ This email is already registered. Please sign in instead.';
-  } else if (err.code === 'auth/invalid-email') {
-    errorEl.textContent = '❌ Please enter a valid email address.';
-  } else if (err.code === 'auth/weak-password') {
-    errorEl.textContent = '❌ Password must be at least 6 characters.';
-  } else if (err.code === 'auth/user-not-found') {
-    errorEl.textContent = '❌ No account found with this email. Please sign up first.';
-  } else if (err.code === 'auth/wrong-password') {
-    errorEl.textContent = '❌ Incorrect password. Please try again.';
-  } else if (err.code === 'auth/too-many-requests') {
-    errorEl.textContent = '❌ Too many failed attempts. Please wait a few minutes and try again.';
-  } else if (err.code === 'auth/network-request-failed') {
-    errorEl.textContent = '⚠️ Network error. Please check your internet connection.';
-  } else {
-    errorEl.textContent = '❌ Authentication failed. Please check your credentials and try again.';
-  }
-}
+        console.warn('Auth error:', err.code);
+        // User-friendly error messages
+        if (err.code === 'auth/email-already-in-use') {
+          errorEl.textContent = '❌ This email is already registered. Please sign in instead.';
+        } else if (err.code === 'auth/invalid-email') {
+          errorEl.textContent = '❌ Invalid email address.';
+        } else if (err.code === 'auth/weak-password') {
+          errorEl.textContent = '❌ Password must be at least 6 characters.';
+        } else if (err.code === 'auth/user-not-found') {
+          errorEl.textContent = '❌ No account found with this email. Please sign up first.';
+        } else if (err.code === 'auth/wrong-password') {
+          errorEl.textContent = '❌ Incorrect password. Please try again.';
+        } else if (err.code === 'auth/too-many-requests') {
+          errorEl.textContent = '❌ Too many failed attempts. Please wait a few minutes.';
+        } else if (err.code === 'auth/network-request-failed') {
+          errorEl.textContent = '⚠️ Network error. Please check your internet connection.';
+        } else {
+          errorEl.textContent = '❌ Authentication failed. Please check your credentials and try again.';
+        }
+      }
     });
 
     // ==================== GOOGLE SIGN-IN ====================
