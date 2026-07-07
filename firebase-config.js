@@ -2,7 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/fireba
 import { getAuth } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
-// Hardcode keys directly (like your old site)
 const firebaseConfig = {
   apiKey: "AIzaSyBVWaHveZgGgcAcgojBMDmDdu1fdeJBgU4",
   authDomain: "danfer-8bfd4.firebaseapp.com",
@@ -15,4 +14,4 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+export const db = getFirestore(app);  // ✅ MUST be exported
