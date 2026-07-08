@@ -1,6 +1,5 @@
 import { auth, db } from './firebase-config.js';
-import { onAuthStateChanged, signOut, updatePassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-import {
+import { onAuthStateChanged, signOut, updatePassword } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
   collection, addDoc, getDocs, query, where, orderBy, doc, getDoc, deleteDoc,
   updateDoc, setDoc, writeBatch
 } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
@@ -81,9 +80,21 @@ function showSection(section) {
 
 // ==================== HELPER ====================
 async function createAuthUser(email, password) {
+  // Use Firebase REST API to create user without signing in
+  const API_KEY = "AIzaSyBVWaHveZgGgcAcgojBMDmDdu1fdeJBgU4"; // Your Danfer API key
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`;
   try {
-    const userCred = await createUserWithEmailAndPassword(auth, email, password);
-    return userCred.user.uid;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, returnSecureToken: false })
+    });
+    if (!res.ok) {
+      const errData = await res.json();
+      throw new Error(errData.error.message);
+    }
+    const data = await res.json();
+    return data.localId; // The new user's UID
   } catch (error) {
     throw error;
   }
