@@ -193,28 +193,37 @@ function restartTyping() {
   typeLoop();
 }
 
+// ========== ⭐ FIXED: fetchUserProfile with explicit role priority ==========
 async function fetchUserProfile(uid) {
-  const cols = ['admins', 'teachers', 'students'];
-  for (const col of cols) {
+  const roleMap = [
+    { collection: 'admins', role: 'admin' },
+    { collection: 'teachers', role: 'teacher' },
+    { collection: 'students', role: 'student' }
+  ];
+
+  for (const { collection, role } of roleMap) {
     try {
-      const q = query(collection(db, col), where('uid', '==', uid));
+      const q = query(collection(db, collection), where('uid', '==', uid));
       const snap = await getDocs(q);
       if (!snap.empty) {
         const data = snap.docs[0].data();
         return {
           name: data.name || data.displayName || '',
           email: currentUser?.email || data.email || '',
-          role: col.slice(0, -1),
+          role: role,
           docId: snap.docs[0].id,
-          collection: col,
+          collection: collection,
           subject: data.subject || '',
           class: data.class || ''
         };
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn(`Error fetching from ${collection}:`, e);
+    }
   }
   return null;
 }
+// ========== END FIXED ==========
 
 function updateAuthUI() {
   const signInBtn = $('#sign-in-btn');
@@ -245,32 +254,26 @@ function showProfileLoading(show) {
   if (el) el.style.display = show ? 'flex' : 'none';
 }
 
-// ========== ⭐ FIXED: Auth State Listener ⭐ ==========
-// Now matches SASS logic: redirect to login.html if NOT logged in
+// ========== ⭐ FIXED: Auth State Listener ==========
 onAuthStateChanged(auth, async (user) => {
-  // Hide loader after 3 seconds (fallback)
   setTimeout(() => {
     const loader = $('#loader');
     if (loader && !loader.classList.contains('hidden')) loader.classList.add('hidden');
   }, 3000);
 
   if (!user) {
-    // ✅ If not logged in, redirect to login page (like SASS)
     window.location.href = 'login.html';
     return;
   }
 
-  // User is logged in
   currentUser = user;
   updateAuthUI();
 
-  // Check if user has a profile in Firestore
   showProfileLoading(true);
   userProfileData = await fetchUserProfile(user.uid);
   showProfileLoading(false);
   updateAuthUI();
 
-  // If user has no profile, show onboarding
   const onboarding = $('#onboarding-overlay');
   if (onboarding) {
     if (!userProfileData) {
@@ -283,7 +286,6 @@ onAuthStateChanged(auth, async (user) => {
     }
   }
 
-  // Load page content
   applyLanguage(currentLang);
   initSchoolStatsChart();
   observeHeroCounters();
@@ -292,7 +294,6 @@ onAuthStateChanged(auth, async (user) => {
   setTimeout(renderTimeline, 300);
   renderAllApps();
 });
-
 // ========== END FIXED ==========
 
 const signInBtn = $('#sign-in-btn');
@@ -365,7 +366,7 @@ if (onboardSave) onboardSave.onclick = () => {
 
 // ==================== LOAD ====================
 window.addEventListener('load', () => {
-  // Auth listener will handle everything
+  // Auth listener handles everything
 });
 
 window.scrollToSection = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
