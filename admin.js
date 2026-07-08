@@ -911,7 +911,7 @@ async function loadPermissionsSection() {
 
 // ==================== SETTINGS ====================
 async function loadSettingsSection() {
-  // ✅ FIXED: Use the currently logged-in user
+  // ✅ FIXED: Always use the currently logged-in user
   const user = auth.currentUser;
   if (!user) {
     $('#admin-main').innerHTML = '<p style="color:var(--color-text-secondary);">Please log in.</p>';
@@ -923,7 +923,7 @@ async function loadSettingsSection() {
   let adminRole = 'Administrator';
 
   try {
-    // Fetch the user's role from Firestore using their UID
+    // ✅ Always fetch the admin document using the logged-in user's UID
     const adminDoc = await getDoc(doc(db, "admins", user.uid));
     if (adminDoc.exists()) {
       const data = adminDoc.data();
