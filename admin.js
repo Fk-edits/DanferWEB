@@ -1,9 +1,9 @@
 import { auth, db } from './firebase-config.js';
-import { onAuthStateChanged, signOut, updatePassword } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js';
+import { onAuthStateChanged, signOut, updatePassword } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 import {
   collection, addDoc, getDocs, query, where, orderBy, doc, getDoc, deleteDoc,
   updateDoc, setDoc, writeBatch
-} from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js';
+} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
