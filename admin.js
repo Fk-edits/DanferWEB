@@ -911,10 +911,49 @@ async function loadPermissionsSection() {
 
 // ==================== SETTINGS ====================
 async function loadSettingsSection() {
-  const adminEmail = auth.currentUser?.email || 'Unknown';
+  // ✅ FIXED: Use the currently logged-in user
+  const user = auth.currentUser;
+  if (!user) {
+    $('#admin-main').innerHTML = '<p style="color:var(--color-text-secondary);">Please log in.</p>';
+    return;
+  }
+
+  const adminEmail = user.email || 'Unknown';
+  let adminName = 'Admin';
+  let adminRole = 'Administrator';
+
+  try {
+    // Fetch the user's role from Firestore using their UID
+    const adminDoc = await getDoc(doc(db, "admins", user.uid));
+    if (adminDoc.exists()) {
+      const data = adminDoc.data();
+      adminName = data.name || 'Admin';
+      adminRole = 'Administrator';
+    } else {
+      const teacherDoc = await getDoc(doc(db, "teachers", user.uid));
+      if (teacherDoc.exists()) {
+        adminName = teacherDoc.data().name || 'Teacher';
+        adminRole = 'Teacher';
+      } else {
+        const studentDoc = await getDoc(doc(db, "students", user.uid));
+        if (studentDoc.exists()) {
+          adminName = studentDoc.data().name || 'Student';
+          adminRole = 'Student';
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('Could not fetch profile:', e);
+  }
+
   $('#admin-main').innerHTML = `
     <h2 class="section-title">Settings</h2>
-    <div class="card"><h3>Profile</h3><p><strong>Email:</strong> ${adminEmail}</p><p><strong>Role:</strong> Administrator</p></div>
+    <div class="card">
+      <h3>Profile</h3>
+      <p><strong>Name:</strong> ${adminName}</p>
+      <p><strong>Email:</strong> ${adminEmail}</p>
+      <p><strong>Role:</strong> ${adminRole}</p>
+    </div>
     <div class="card"><h3>Theme</h3><button class="btn-primary" id="toggle-theme-btn"><i class="fa-solid fa-palette"></i> Toggle Light/Dark</button></div>
     <div class="card"><h3>Change Password</h3><input type="password" id="new-password" placeholder="New password"><button class="btn-primary" id="change-password-btn"><i class="fa-solid fa-key"></i> Update</button><p class="msg" id="password-msg"></p></div>
     <div class="card">
@@ -929,6 +968,7 @@ async function loadSettingsSection() {
     <div class="card"><h3>Danger Zone</h3><button class="btn-primary btn-danger" id="reset-firestore-btn"><i class="fa-solid fa-trash"></i> Reset Data</button><p class="msg" id="reset-msg"></p></div>
   `;
 
+  // Load current API key
   try {
     const docSnap = await getDoc(doc(db, "settings", "api_keys"));
     if (docSnap.exists()) {
@@ -938,6 +978,7 @@ async function loadSettingsSection() {
     console.error(e);
   }
 
+  // Save API key
   $('#save-api-key-btn').addEventListener('click', async () => {
     const key = $('#openrouter-key').value.trim();
     const msg = $('#api-key-msg');
@@ -956,6 +997,7 @@ async function loadSettingsSection() {
     }
   });
 
+  // Theme toggle
   document.getElementById('toggle-theme-btn').addEventListener('click', () => {
     const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', newTheme);
@@ -963,6 +1005,7 @@ async function loadSettingsSection() {
     updateThemeIcon();
   });
 
+  // Change password
   $('#change-password-btn').addEventListener('click', async () => {
     const newPass = $('#new-password').value.trim();
     const msg = $('#password-msg');
@@ -973,6 +1016,7 @@ async function loadSettingsSection() {
     } catch (e) { msg.textContent = e.message; msg.className = 'msg error'; }
   });
 
+  // Danger Zone – clear all except admins
   $('#reset-firestore-btn').addEventListener('click', async () => {
     if (!confirm('Delete ALL data except admin accounts? This cannot be undone.')) return;
 
