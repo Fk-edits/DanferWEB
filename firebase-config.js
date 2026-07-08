@@ -2,7 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/fireba
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-// ===== DANFER FIREBASE CONFIG =====
 const firebaseConfig = {
   apiKey: "AIzaSyBVWaHveZgGgcAcgojBMDmDdu1fdeJBgU4",
   authDomain: "danfer-8bfd4.firebaseapp.com",
