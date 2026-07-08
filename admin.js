@@ -1,5 +1,6 @@
 import { auth, db } from './firebase-config.js';
 import { onAuthStateChanged, signOut, updatePassword } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+import {
   collection, addDoc, getDocs, query, where, orderBy, doc, getDoc, deleteDoc,
   updateDoc, setDoc, writeBatch
 } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
@@ -28,22 +29,33 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
 
 // ==================== AUTH ====================
 onAuthStateChanged(auth, async (user) => {
+  // Always hide loader after 3 seconds (fallback)
   setTimeout(() => {
     const loader = $('#loader');
     if (loader && !loader.classList.contains('hidden')) loader.classList.add('hidden');
   }, 3000);
 
-  if (!user) { window.location.href = 'login.html'; return; }
+  if (!user) {
+    window.location.href = 'login.html';
+    return;
+  }
 
   try {
     const q = query(collection(db, "admins"), where("uid", "==", user.uid), where("role", "==", "admin"));
     const snap = await getDocs(q);
-    if (snap.empty) { await signOut(auth); window.location.href = 'login.html'; return; }
-    $('#loader').classList.add('hidden');
+    if (snap.empty) {
+      await signOut(auth);
+      window.location.href = 'login.html';
+      return;
+    }
+    // ✅ Hide loader immediately if admin found
+    const loader = $('#loader');
+    if (loader) loader.classList.add('hidden');
     showSection('dashboard');
   } catch (e) {
     console.error(e);
-    $('#loader').classList.add('hidden');
+    const loader = $('#loader');
+    if (loader) loader.classList.add('hidden');
   }
 });
 
@@ -78,10 +90,10 @@ function showSection(section) {
   }
 }
 
-// ==================== HELPER ====================
+// ==================== HELPER – CREATE USER VIA REST API ====================
 async function createAuthUser(email, password) {
-  // Use Firebase REST API to create user without signing in
-  const API_KEY = "AIzaSyBVWaHveZgGgcAcgojBMDmDdu1fdeJBgU4"; // Your Danfer API key
+  // ✅ Using REST API to avoid signing in the new user (like SASS)
+  const API_KEY = "AIzaSyBVWaHveZgGgcAcgojBMDmDdu1fdeJBgU4"; // Danfer API key
   const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`;
   try {
     const res = await fetch(url, {
@@ -94,7 +106,7 @@ async function createAuthUser(email, password) {
       throw new Error(errData.error.message);
     }
     const data = await res.json();
-    return data.localId; // The new user's UID
+    return data.localId; // new user's UID
   } catch (error) {
     throw error;
   }
@@ -922,7 +934,7 @@ async function loadPermissionsSection() {
 
 // ==================== SETTINGS ====================
 async function loadSettingsSection() {
-  // ✅ FIXED: Always use the currently logged-in user
+  // ✅ Always use the currently logged-in user
   const user = auth.currentUser;
   if (!user) {
     $('#admin-main').innerHTML = '<p style="color:var(--color-text-secondary);">Please log in.</p>';
@@ -934,7 +946,6 @@ async function loadSettingsSection() {
   let adminRole = 'Administrator';
 
   try {
-    // ✅ Always fetch the admin document using the logged-in user's UID
     const adminDoc = await getDoc(doc(db, "admins", user.uid));
     if (adminDoc.exists()) {
       const data = adminDoc.data();
