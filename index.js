@@ -245,38 +245,67 @@ function showProfileLoading(show) {
   if (el) el.style.display = show ? 'flex' : 'none';
 }
 
+// ========== ⭐ FIXED: Auth State Listener ⭐ ==========
+// Now matches SASS logic: redirect to login.html if NOT logged in
 onAuthStateChanged(auth, async (user) => {
+  // Hide loader after 3 seconds (fallback)
+  setTimeout(() => {
+    const loader = $('#loader');
+    if (loader && !loader.classList.contains('hidden')) loader.classList.add('hidden');
+  }, 3000);
+
+  if (!user) {
+    // ✅ If not logged in, redirect to login page (like SASS)
+    window.location.href = 'login.html';
+    return;
+  }
+
+  // User is logged in
   currentUser = user;
   updateAuthUI();
-  if (user) {
-    showProfileLoading(true);
-    userProfileData = await fetchUserProfile(user.uid);
-    showProfileLoading(false);
-    updateAuthUI();
-    const onboarding = $('#onboarding-overlay');
-    if (onboarding) onboarding.classList.remove('active');
-  } else {
-    userProfileData = null;
-    updateAuthUI();
-    const local = JSON.parse(localStorage.getItem('danfer_profile') || 'null');
-    if (!local?.name) {
-      setTimeout(() => {
-        const onboarding = $('#onboarding-overlay');
-        if (onboarding) onboarding.classList.add('active');
-      }, 700);
+
+  // Check if user has a profile in Firestore
+  showProfileLoading(true);
+  userProfileData = await fetchUserProfile(user.uid);
+  showProfileLoading(false);
+  updateAuthUI();
+
+  // If user has no profile, show onboarding
+  const onboarding = $('#onboarding-overlay');
+  if (onboarding) {
+    if (!userProfileData) {
+      const local = JSON.parse(localStorage.getItem('danfer_profile') || 'null');
+      if (!local?.name) {
+        onboarding.classList.add('active');
+      }
+    } else {
+      onboarding.classList.remove('active');
     }
   }
+
+  // Load page content
+  applyLanguage(currentLang);
+  initSchoolStatsChart();
+  observeHeroCounters();
+  setTimeout(renderStaff, 100);
+  setTimeout(renderAchievers, 200);
+  setTimeout(renderTimeline, 300);
+  renderAllApps();
 });
+
+// ========== END FIXED ==========
 
 const signInBtn = $('#sign-in-btn');
 if (signInBtn) signInBtn.addEventListener('click', () => window.location.href = 'login.html');
+
 const logoutBtn = $('#logout-btn');
 if (logoutBtn) logoutBtn.addEventListener('click', async () => {
   await signOut(auth);
   closeSidebar();
+  window.location.href = 'login.html';
 });
 
-// Sidebar
+// ==================== SIDEBAR ====================
 async function openSidebar() {
   const sidebar = $('#profile-sidebar');
   if (sidebar) sidebar.classList.add('open');
@@ -334,21 +363,9 @@ if (onboardSave) onboardSave.onclick = () => {
   showToast('Welcome, ' + name + '!');
 };
 
+// ==================== LOAD ====================
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    const loader = $('#loader');
-    if (loader) {
-      loader.classList.add('hidden');
-      setTimeout(() => loader.remove(), 600);
-    }
-  }, 500);
-  applyLanguage(currentLang);
-  initSchoolStatsChart();
-  observeHeroCounters();
-  setTimeout(renderStaff, 100);
-  setTimeout(renderAchievers, 200);
-  setTimeout(renderTimeline, 300);
-  renderAllApps();
+  // Auth listener will handle everything
 });
 
 window.scrollToSection = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -714,7 +731,6 @@ if (langSelect) langSelect.addEventListener('change', (e) => applyLanguage(e.tar
 applyLanguage(currentLang);
 applyTheme(theme);
 
-/* ========== NEW UI ENHANCEMENTS ========== */
 // Scroll progress bar + Navbar blur on scroll
 window.addEventListener('scroll', () => {
   const progressBar = document.querySelector('.scroll-progress');
