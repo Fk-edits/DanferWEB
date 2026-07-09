@@ -1218,137 +1218,102 @@ footer .copyright {
   width: 100%;
 }
 
-/* ===== FLOATING AI BOT – ENHANCED & FIXED ===== */
+/* ================================================================
+   FLOATING AI BOT – FIXED CIRCLE WITH LEFT STATUS LIGHT + MOVEMENT
+   ================================================================ */
 #floating-bot {
   position: fixed !important;
   bottom: 30px !important;
   right: 30px !important;
-  z-index: 99999 !important; /* HIGHEST – always on top */
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
+  z-index: 99999 !important;
+
+  /* Circle shape, smaller size */
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
   background: linear-gradient(145deg, var(--color-primary), var(--color-accent));
   color: #fff;
   border: none;
   cursor: pointer;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 0 rgba(26, 58, 92, 0.6);
-  animation: botPulse 2s ease-in-out infinite, botBounce 3s ease-in-out infinite;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
-  text-decoration: none;
-  /* Tooltip */
   position: relative;
+
+  /* Gentle floating movement */
+  animation: botFloat 3s ease-in-out infinite;
 }
 
-/* Pulsing glow ring */
-#floating-bot::before {
-  content: '';
+/* Status indicator – placed at top-left */
+#floating-bot .status-dot {
   position: absolute;
-  inset: -6px;
+  top: -2px;
+  left: -2px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: transparent;
-  border: 3px solid var(--color-accent);
-  animation: botRingPulse 2s ease-in-out infinite;
-  pointer-events: none;
+  background: #22c55e; /* green – online */
+  border: 2px solid var(--color-card);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
+  animation: pulse-dot 2s infinite;
+  z-index: 10;
+}
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
 }
 
-[data-theme="dark"] #floating-bot::before {
-  border-color: var(--color-accent);
-}
-
-/* Tooltip label */
-#floating-bot::after {
-  content: 'AI Assistant 🤖';
+/* "Ask me" speech bubble – appears on hover */
+#floating-bot .ask-bubble {
   position: absolute;
-  right: 80px;
+  right: 72px;
   top: 50%;
   transform: translateY(-50%);
   background: var(--color-card);
   color: var(--color-text-primary);
-  padding: 6px 16px;
-  border-radius: 50px;
-  font-size: 0.8rem;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.75rem;
   font-weight: 600;
   white-space: nowrap;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(26, 58, 92, 0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  border: 1px solid rgba(26,58,92,0.08);
   opacity: 0;
-  pointer-events: none;
   transition: opacity 0.25s ease, transform 0.25s ease;
-  transform: translateY(-50%) translateX(8px);
+  transform: translateY(-50%) translateX(10px);
   font-family: 'Inter', system-ui, sans-serif;
+  pointer-events: none;
 }
-
-[data-theme="dark"] #floating-bot::after {
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-#floating-bot:hover::after {
+#floating-bot:hover .ask-bubble {
   opacity: 1;
   transform: translateY(-50%) translateX(0);
 }
+#floating-bot .ask-bubble::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 8px solid var(--color-card);
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
 
+/* Hover effect */
 #floating-bot:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 40px rgba(26, 58, 92, 0.4);
+  transform: scale(1.1);
+  box-shadow: 0 8px 30px rgba(26,58,92,0.4);
+  animation-play-state: paused;
 }
 
-[data-theme="dark"] #floating-bot:hover {
-  box-shadow: 0 0 40px rgba(245, 197, 66, 0.3);
-}
-
-#floating-bot.hiding {
-  opacity: 0.4;
-  animation: none;
-}
-
-#floating-bot.dragging {
-  animation: none;
-  cursor: grabbing;
-  opacity: 1;
-}
-
-/* Animations */
-@keyframes botPulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(26, 58, 92, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 18px rgba(26, 58, 92, 0);
-  }
-}
-
-[data-theme="dark"] @keyframes botPulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(245, 197, 66, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 0 18px rgba(245, 197, 66, 0);
-  }
-}
-
-@keyframes botRingPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0;
-  }
-}
-
-@keyframes botBounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
+/* Floating animation */
+@keyframes botFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }
 
 /* ===== MODALS ===== */
@@ -1470,7 +1435,7 @@ footer .copyright {
   nav .nav-links a { padding: 6px 10px; font-size: 0.75rem; }
   nav .logo { font-size: 1.1rem; }
   section { padding: 60px 16px 40px; }
-  #hero { padding-top: 100px; padding-bottom: 50px; min-height: 60vh; }
+  #hero { padding-top: 110px; }
   .staff-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
   .apps-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
   .achievers-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
@@ -1482,10 +1447,16 @@ footer .copyright {
 
 @media (max-width: 480px) {
   nav .nav-links a { padding: 4px 8px; font-size: 0.7rem; }
+  nav { padding: 4px 10px; gap: 4px; }
+  nav .nav-actions { gap: 4px; }
+  nav .nav-actions button { width: 30px; height: 30px; font-size: 0.9rem; }
+  .lang-switch select { padding: 4px 6px; font-size: 0.7rem; }
+  .btn-signin { padding: 4px 12px; font-size: 0.7rem; }
   .staff-grid { grid-template-columns: 1fr; }
   .apps-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .app-card .app-icon-wrap { width: 56px; height: 56px; font-size: 1.5rem; }
   .achievers-grid { grid-template-columns: 1fr 1fr; }
+  #hero { padding-top: 90px; min-height: 50vh; }
   #hero .hero-stat { padding: 14px 18px; min-width: 80px; }
   #hero .hero-stat .stat-num { font-size: 1.4rem; }
   .about-grid { gap: 16px; }
@@ -1495,4 +1466,141 @@ footer .copyright {
   .map-inner iframe { min-height: 240px; }
   section h2 { font-size: 1.5rem; }
   .onboarding-card { padding: 24px 16px; }
+}
+
+/* ===== 320px NAVBAR – BIG NAME + LINKS ROW ===== */
+@media (max-width: 360px) {
+  nav {
+    flex-wrap: wrap !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 6px 10px !important;
+    gap: 4px !important;
+    min-height: auto !important;
+    background: var(--color-card) !important;
+    border-bottom: 1px solid rgba(26, 58, 92, 0.08) !important;
+  }
+
+  /* Row 1: Logo + Profile (inline) */
+  nav .logo {
+    order: 1 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    font-size: 1.3rem !important;
+    font-weight: 800 !important;
+    color: var(--color-primary) !important;
+    padding: 0 !important;
+  }
+  nav .logo i {
+    font-size: 1.2rem !important;
+  }
+  /* Profile button – we'll move it inside .logo via HTML */
+  nav .logo .profile-mobile {
+    display: flex !important;
+    align-items: center;
+  }
+  /* Hide the original profile button from actions */
+  nav .nav-actions #profile-btn {
+    display: none !important;
+  }
+
+  /* Row 2: Nav links – scrollable */
+  nav .nav-links {
+    order: 2 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start !important;
+    gap: 2px !important;
+    width: 100% !important;
+    padding: 2px 0 !important;
+  }
+  nav .nav-links a {
+    padding: 4px 8px !important;
+    font-size: 0.6rem !important;
+    white-space: nowrap !important;
+    border-radius: 4px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Row 3: Actions (theme, lang, signin) */
+  nav .nav-actions {
+    order: 3 !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    padding-top: 4px !important;
+    border-top: 1px solid rgba(26, 58, 92, 0.06) !important;
+  }
+  nav .nav-actions button {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.75rem !important;
+  }
+  .lang-switch select {
+    padding: 2px 4px !important;
+    font-size: 0.6rem !important;
+  }
+  .btn-signin {
+    padding: 2px 8px !important;
+    font-size: 0.6rem !important;
+  }
+
+  /* Increase hero padding-top to clear the taller nav */
+  #hero {
+    padding-top: 110px !important;
+  }
+}
+
+/* ===== UNIFY PROFILE + THEME ICONS – SAME SIZE & COLOR ===== */
+/* Make profile button match theme toggle */
+#profile-btn,
+#profile-sidebar .close-btn,
+nav .nav-actions button,
+nav .logo .profile-mobile button {
+  width: 38px !important;
+  height: 38px !important;
+  font-size: 1.1rem !important;
+  color: var(--color-text-secondary) !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.25s ease !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+}
+
+/* Hover effect – matches theme toggle */
+#profile-btn:hover,
+nav .logo .profile-mobile button:hover,
+nav .nav-actions button:hover {
+  background: var(--color-primary) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(26, 58, 92, 0.25) !important;
+}
+
+/* Dark mode hover */
+[data-theme="dark"] #profile-btn:hover,
+[data-theme="dark"] nav .logo .profile-mobile button:hover,
+[data-theme="dark"] nav .nav-actions button:hover {
+  background: var(--color-accent) !important;
+  color: var(--color-primary) !important;
+  box-shadow: 0 4px 16px rgba(245, 197, 66, 0.2) !important;
+}
+
+/* Ensure the profile icon inside the logo row doesn't stretch on mobile */
+@media (max-width: 360px) {
+  nav .logo .profile-mobile button {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.9rem !important;
+  }
 }
