@@ -40,7 +40,12 @@
 
   <!-- Navbar -->
   <nav>
-    <div class="logo" onclick="scrollToSection('hero')"><i class="fa-solid fa-graduation-cap"></i> Danfer</div>
+   <div class="logo" onclick="scrollToSection('hero')">
+  <span><i class="fa-solid fa-graduation-cap"></i> Danfer</span>
+  <span class="profile-mobile">
+    <button id="profile-btn" title="Profile" style="display:none;"><i class="fa-solid fa-user"></i></button>
+  </span>
+</div>
     <ul class="nav-links">
       <li><a onclick="scrollToSection('hero')" class="active" data-i18n="nav_home">Home</a></li>
       <li><a onclick="scrollToSection('about-section')" data-i18n="nav_about">About</a></li>
