@@ -1468,37 +1468,42 @@ footer .copyright {
   .onboarding-card { padding: 24px 16px; }
 }
 
-/* ===== FORCE NAVBAR ONE ROW ON TINY SCREENS (320px-360px) ===== */
+/* ===== TINY SCREENS (320px–360px) – FIX NAVBAR OVERFLOW ===== */
 @media (max-width: 360px) {
   nav {
     padding: 2px 4px !important;
-    gap: 1px !important;
+    gap: 2px !important;
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch;
-    min-height: 40px !important;
+    min-height: 36px !important;
+    align-items: center !important;
   }
 
+  /* Shrink logo */
   nav .logo {
-    font-size: 0.7rem !important;
+    font-size: 0.65rem !important;
     gap: 2px !important;
     flex-shrink: 0 !important;
   }
   nav .logo i {
-    font-size: 0.75rem !important;
+    font-size: 0.7rem !important;
   }
 
+  /* All nav links in a single row */
   nav .nav-links {
     gap: 1px !important;
-    flex-shrink: 1 !important;
     flex-wrap: nowrap !important;
+    flex-shrink: 1 !important;
   }
   nav .nav-links a {
     padding: 2px 4px !important;
     font-size: 0.5rem !important;
     border-radius: 4px !important;
+    white-space: nowrap !important;
   }
 
+  /* Actions */
   nav .nav-actions {
     gap: 1px !important;
     flex-shrink: 0 !important;
@@ -1510,38 +1515,39 @@ footer .copyright {
     padding: 1px !important;
   }
   .lang-switch select {
-    padding: 1px 3px !important;
-    font-size: 0.45rem !important;
-    min-width: 20px !important;
+    padding: 1px 2px !important;
+    font-size: 0.4rem !important;
+    min-width: 16px !important;
   }
   .btn-signin {
     padding: 1px 4px !important;
-    font-size: 0.45rem !important;
+    font-size: 0.4rem !important;
     border-width: 1px !important;
   }
 
+  /* Hero – clear the tiny nav */
   #hero {
-    padding-top: 90px !important;
-    min-height: 45vh !important;
+    padding-top: 80px !important;
+    min-height: 40vh !important;
   }
   #hero h1 {
-    font-size: clamp(1.2rem, 4.5vw, 1.6rem) !important;
+    font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
   }
   #hero .typing-text {
-    font-size: 0.7rem !important;
+    font-size: 0.65rem !important;
   }
   #hero .hero-stat {
-    padding: 8px 10px !important;
-    min-width: 60px !important;
+    padding: 4px 8px !important;
+    min-width: 50px !important;
   }
   #hero .hero-stat .stat-num {
-    font-size: 1rem !important;
+    font-size: 0.9rem !important;
   }
   #hero .hero-stat .stat-label {
-    font-size: 0.5rem !important;
+    font-size: 0.45rem !important;
   }
   #hero .hero-stats {
-    gap: 6px !important;
-    margin-top: 12px !important;
+    gap: 4px !important;
+    margin-top: 8px !important;
   }
 }
