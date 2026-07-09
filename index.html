@@ -38,14 +38,11 @@
     </div>
   </div>
 
-  <!-- Navbar -->
+  <!-- Navbar – only ONE profile button -->
   <nav>
-   <div class="logo" onclick="scrollToSection('hero')">
-  <span><i class="fa-solid fa-graduation-cap"></i> Danfer</span>
-  <span class="profile-mobile">
-    <button id="profile-btn" title="Profile" style="display:none;"><i class="fa-solid fa-user"></i></button>
-  </span>
-</div>
+    <div class="logo" onclick="scrollToSection('hero')">
+      <i class="fa-solid fa-graduation-cap"></i> Danfer
+    </div>
     <ul class="nav-links">
       <li><a onclick="scrollToSection('hero')" class="active" data-i18n="nav_home">Home</a></li>
       <li><a onclick="scrollToSection('about-section')" data-i18n="nav_about">About</a></li>
@@ -63,7 +60,9 @@
         </select>
       </div>
       <button id="theme-toggle" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+      <!-- Sign-In Button -->
       <button id="sign-in-btn" class="btn-signin"><span data-i18n="sign_in">Sign In</span></button>
+      <!-- Profile Button – only one, in nav-actions -->
       <button id="profile-btn" title="Profile" style="display:none;"><i class="fa-solid fa-user"></i></button>
     </div>
   </nav>
@@ -211,14 +210,12 @@
     </div>
   </div>
 
-  <!-- Floating AI Bot -->
-<!-- Floating AI Bot -->
-<button id="floating-bot" title="AI Assistant" aria-label="AI Assistant">
-  <i class="fa-solid fa-robot"></i>
-  <span class="status-dot"></span>
-  <span class="ask-bubble">Ask me</span>
-</button>
-
+  <!-- Floating AI Bot (with status dot and Ask me bubble) -->
+  <button id="floating-bot" title="AI Assistant" aria-label="AI Assistant">
+    <i class="fa-solid fa-robot"></i>
+    <span class="status-dot"></span>
+    <span class="ask-bubble">Ask me</span>
+  </button>
 
   <script type="module" src="index.js"></script>
 </body>
