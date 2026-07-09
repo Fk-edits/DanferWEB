@@ -1556,3 +1556,51 @@ footer .copyright {
     padding-top: 110px !important;
   }
 }
+
+/* ===== UNIFY PROFILE + THEME ICONS – SAME SIZE & COLOR ===== */
+/* Make profile button match theme toggle */
+#profile-btn,
+#profile-sidebar .close-btn,
+nav .nav-actions button,
+nav .logo .profile-mobile button {
+  width: 38px !important;
+  height: 38px !important;
+  font-size: 1.1rem !important;
+  color: var(--color-text-secondary) !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.25s ease !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+}
+
+/* Hover effect – matches theme toggle */
+#profile-btn:hover,
+nav .logo .profile-mobile button:hover,
+nav .nav-actions button:hover {
+  background: var(--color-primary) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(26, 58, 92, 0.25) !important;
+}
+
+/* Dark mode hover */
+[data-theme="dark"] #profile-btn:hover,
+[data-theme="dark"] nav .logo .profile-mobile button:hover,
+[data-theme="dark"] nav .nav-actions button:hover {
+  background: var(--color-accent) !important;
+  color: var(--color-primary) !important;
+  box-shadow: 0 4px 16px rgba(245, 197, 66, 0.2) !important;
+}
+
+/* Ensure the profile icon inside the logo row doesn't stretch on mobile */
+@media (max-width: 360px) {
+  nav .logo .profile-mobile button {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.9rem !important;
+  }
+}
