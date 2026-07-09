@@ -1468,86 +1468,91 @@ footer .copyright {
   .onboarding-card { padding: 24px 16px; }
 }
 
-/* ===== TINY SCREENS (320px–360px) – FIX NAVBAR OVERFLOW ===== */
+/* ===== 320px NAVBAR – BIG NAME + LINKS ROW ===== */
 @media (max-width: 360px) {
   nav {
-    padding: 2px 4px !important;
-    gap: 2px !important;
+    flex-wrap: wrap !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 6px 10px !important;
+    gap: 4px !important;
+    min-height: auto !important;
+    background: var(--color-card) !important;
+    border-bottom: 1px solid rgba(26, 58, 92, 0.08) !important;
+  }
+
+  /* Row 1: Logo + Profile (inline) */
+  nav .logo {
+    order: 1 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    font-size: 1.3rem !important;
+    font-weight: 800 !important;
+    color: var(--color-primary) !important;
+    padding: 0 !important;
+  }
+  nav .logo i {
+    font-size: 1.2rem !important;
+  }
+  /* Profile button – we'll move it inside .logo via HTML */
+  nav .logo .profile-mobile {
+    display: flex !important;
+    align-items: center;
+  }
+  /* Hide the original profile button from actions */
+  nav .nav-actions #profile-btn {
+    display: none !important;
+  }
+
+  /* Row 2: Nav links – scrollable */
+  nav .nav-links {
+    order: 2 !important;
+    display: flex !important;
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch;
-    min-height: 36px !important;
-    align-items: center !important;
-  }
-
-  /* Shrink logo */
-  nav .logo {
-    font-size: 0.65rem !important;
+    justify-content: flex-start !important;
     gap: 2px !important;
-    flex-shrink: 0 !important;
-  }
-  nav .logo i {
-    font-size: 0.7rem !important;
-  }
-
-  /* All nav links in a single row */
-  nav .nav-links {
-    gap: 1px !important;
-    flex-wrap: nowrap !important;
-    flex-shrink: 1 !important;
+    width: 100% !important;
+    padding: 2px 0 !important;
   }
   nav .nav-links a {
-    padding: 2px 4px !important;
-    font-size: 0.5rem !important;
-    border-radius: 4px !important;
+    padding: 4px 8px !important;
+    font-size: 0.6rem !important;
     white-space: nowrap !important;
-  }
-
-  /* Actions */
-  nav .nav-actions {
-    gap: 1px !important;
+    border-radius: 4px !important;
     flex-shrink: 0 !important;
   }
+
+  /* Row 3: Actions (theme, lang, signin) */
+  nav .nav-actions {
+    order: 3 !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    padding-top: 4px !important;
+    border-top: 1px solid rgba(26, 58, 92, 0.06) !important;
+  }
   nav .nav-actions button {
-    width: 18px !important;
-    height: 18px !important;
-    font-size: 0.5rem !important;
-    padding: 1px !important;
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.75rem !important;
   }
   .lang-switch select {
-    padding: 1px 2px !important;
-    font-size: 0.4rem !important;
-    min-width: 16px !important;
+    padding: 2px 4px !important;
+    font-size: 0.6rem !important;
   }
   .btn-signin {
-    padding: 1px 4px !important;
-    font-size: 0.4rem !important;
-    border-width: 1px !important;
+    padding: 2px 8px !important;
+    font-size: 0.6rem !important;
   }
 
-  /* Hero – clear the tiny nav */
+  /* Increase hero padding-top to clear the taller nav */
   #hero {
-    padding-top: 80px !important;
-    min-height: 40vh !important;
-  }
-  #hero h1 {
-    font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
-  }
-  #hero .typing-text {
-    font-size: 0.65rem !important;
-  }
-  #hero .hero-stat {
-    padding: 4px 8px !important;
-    min-width: 50px !important;
-  }
-  #hero .hero-stat .stat-num {
-    font-size: 0.9rem !important;
-  }
-  #hero .hero-stat .stat-label {
-    font-size: 0.45rem !important;
-  }
-  #hero .hero-stats {
-    gap: 4px !important;
-    margin-top: 8px !important;
+    padding-top: 110px !important;
   }
 }
