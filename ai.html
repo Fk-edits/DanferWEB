@@ -2,609 +2,275 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Danfer School – AI Assistant</title>
-
-  <script>
-    (function(){
-      var theme = localStorage.getItem('danfer_theme') || 'dark';
-      document.documentElement.setAttribute('data-theme', theme);
-    })();
-  </script>
-
-  <!-- Google Fonts: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <!-- Central theme -->
-  <link rel="stylesheet" href="theme.css">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenRouter API Test</title>
   <style>
-    :root { --header-height: 60px; --input-height: 72px; }
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: var(--color-background);
-      color: var(--color-text-primary);
-      height: 100vh;
-      overflow: hidden;
-      transition: background 0.3s, color 0.3s;
-    }
-    .chat-header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: var(--header-height);
-      background: var(--color-card);
-      border-bottom: 1px solid rgba(26, 58, 92, 0.08);
-      padding: 12px 20px;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0b1120;
+      color: #e2e8f0;
+      min-height: 100vh;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-weight: 700;
-      font-size: 1.1rem;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      z-index: 100;
-      color: var(--color-text-primary);
-      transition: background 0.3s, border-color 0.3s;
-    }
-    [data-theme="dark"] .chat-header {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .chat-header .left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .chat-header .left i {
-      color: var(--color-accent);
-      font-size: 1.2rem;
-    }
-    .chat-header .right {
-      display: flex;
-      gap: 8px;
-    }
-    .chat-header .right button {
-      background: transparent;
-      border: none;
-      color: var(--color-text-secondary);
-      font-size: 1.1rem;
-      cursor: pointer;
-      padding: 4px 8px;
-      border-radius: 8px;
-      transition: all 0.2s;
-    }
-    .chat-header .right button:hover {
-      background: var(--color-primary);
-      color: #fff;
-    }
-    .chat-area {
-      height: 100vh;
-      overflow-y: auto;
-      padding-top: var(--header-height);
-      padding-bottom: var(--input-height);
-      display: flex;
-      flex-direction: column;
-    }
-    .chat-messages {
-      flex: 1;
-      padding: 16px 16px 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .message {
-      display: flex;
-      flex-direction: column;
-      max-width: 80%;
-    }
-    .message.user { align-self: flex-end; }
-    .message.ai { align-self: flex-start; }
-
-    .message .bubble-wrapper {
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
-    }
-    .message.ai .bubble-wrapper {
-      flex-direction: row;
-    }
-    .message.user .bubble-wrapper {
-      flex-direction: row-reverse;
-    }
-
-    .message .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--color-accent);
-      color: var(--color-primary);
-      display: flex;
-      align-items: center;
       justify-content: center;
-      font-size: 1rem;
-      flex-shrink: 0;
+      align-items: center;
+      padding: 20px;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 20px;
+      padding: 32px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+      border: 1px solid #2d3a4f;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      color: #facc15;
+    }
+    p.sub {
+      color: #94a3b8;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94a3b8;
       margin-bottom: 4px;
     }
-    .message.user .avatar {
-      background: var(--color-primary);
-      color: #fff;
-    }
-    [data-theme="dark"] .message.user .avatar {
-      background: var(--color-accent);
-      color: var(--color-primary);
-    }
-
-    .message-bubble {
-      padding: 10px 16px;
-      border-radius: 18px;
+    input, textarea, select {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #e2e8f0;
       font-size: 0.9rem;
-      line-height: 1.6;
-      word-wrap: break-word;
-      position: relative;
-    }
-    .user .message-bubble {
-      background: var(--color-primary);
-      color: #fff;
-      border-bottom-right-radius: 4px;
-    }
-    [data-theme="dark"] .user .message-bubble {
-      background: var(--color-accent);
-      color: var(--color-primary);
-    }
-    .ai .message-bubble {
-      background: var(--color-card);
-      border: 1px solid rgba(26, 58, 92, 0.06);
-      border-bottom-left-radius: 4px;
-      color: var(--color-text-primary);
-    }
-    [data-theme="dark"] .ai .message-bubble {
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .message-sender {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--color-text-secondary);
-      margin: 0 4px 2px;
-    }
-    .message-time {
-      font-size: 0.6rem;
-      color: var(--color-text-secondary);
-      margin: 0 4px;
-      opacity: 0.7;
-      align-self: flex-end;
-    }
-    .user .message-time {
-      align-self: flex-end;
-    }
-    .ai .message-time {
-      align-self: flex-start;
-    }
-
-    .chat-input {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: var(--input-height);
-      background: var(--color-card);
-      border-top: 1px solid rgba(26, 58, 92, 0.08);
-      padding: 12px 16px;
-      display: flex;
-      gap: 10px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      z-index: 100;
-      transition: background 0.3s, border-color 0.3s;
-    }
-    [data-theme="dark"] .chat-input {
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .chat-input textarea {
-      flex: 1;
-      padding: 10px 16px;
-      border-radius: 50px;
-      border: 1px solid rgba(26, 58, 92, 0.1);
-      background: var(--color-background);
-      color: var(--color-text-primary);
-      font-size: 0.9rem;
+      font-family: inherit;
       outline: none;
-      resize: none;
-      height: 44px;
-      font-family: 'Inter', system-ui, sans-serif;
-      transition: all 0.3s;
+      transition: border 0.2s;
     }
-    [data-theme="dark"] .chat-input textarea {
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    input:focus, textarea:focus, select:focus {
+      border-color: #facc15;
     }
-    .chat-input textarea:focus {
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 4px rgba(26, 58, 92, 0.08);
+    textarea {
+      min-height: 80px;
+      resize: vertical;
     }
-    [data-theme="dark"] .chat-input textarea:focus {
-      box-shadow: 0 0 0 4px rgba(245, 197, 66, 0.08);
-    }
-    .chat-input textarea::placeholder {
-      color: var(--color-text-secondary);
-      opacity: 0.7;
-    }
-    .chat-input button {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
+    .btn {
+      background: #facc15;
+      color: #0f172a;
       border: none;
-      background: var(--color-primary);
-      color: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.25s;
-      flex-shrink: 0;
-      box-shadow: 0 4px 16px rgba(26, 58, 92, 0.2);
-    }
-    [data-theme="dark"] .chat-input button {
-      background: var(--color-accent);
-      color: var(--color-primary);
-      box-shadow: 0 4px 16px rgba(245, 197, 66, 0.2);
-    }
-    .chat-input button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 24px rgba(26, 58, 92, 0.3);
-    }
-    [data-theme="dark"] .chat-input button:hover {
-      box-shadow: 0 6px 24px rgba(245, 197, 66, 0.3);
-    }
-
-    .typing-indicator {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding: 10px 16px;
-      background: var(--color-card);
-      border: 1px solid rgba(26, 58, 92, 0.06);
-      border-radius: 18px;
-      width: fit-content;
-      border-bottom-left-radius: 4px;
-    }
-    [data-theme="dark"] .typing-indicator {
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .typing-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--color-text-secondary);
-      animation: typing 1.4s infinite;
-    }
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes typing {
-      0%, 60%, 100% { opacity: 0.4; transform: scale(0.8); }
-      30% { opacity: 1; transform: scale(1.2); }
-    }
-
-    .login-prompt {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      color: var(--color-text-secondary);
-      flex-direction: column;
-      gap: 16px;
-      padding: 20px;
-      text-align: center;
-    }
-    .login-prompt i {
-      font-size: 3rem;
-      color: var(--color-text-secondary);
-      opacity: 0.5;
-    }
-    .login-prompt p {
-      font-size: 1rem;
-    }
-    .login-prompt button {
-      padding: 10px 28px;
-      background: var(--color-primary);
-      color: #fff;
-      border: none;
+      padding: 12px 24px;
       border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
       cursor: pointer;
-      font-weight: 600;
-      font-size: 0.9rem;
-      font-family: 'Inter', system-ui, sans-serif;
-      transition: all 0.25s;
-      box-shadow: 0 4px 16px rgba(26, 58, 92, 0.2);
+      transition: all 0.2s;
+      width: 100%;
+      margin-top: 8px;
     }
-    [data-theme="dark"] .login-prompt button {
-      background: var(--color-accent);
-      color: var(--color-primary);
-      box-shadow: 0 4px 16px rgba(245, 197, 66, 0.2);
-    }
-    .login-prompt button:hover {
+    .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(26, 58, 92, 0.3);
+      box-shadow: 0 4px 20px rgba(250, 204, 21, 0.3);
     }
-    [data-theme="dark"] .login-prompt button:hover {
-      box-shadow: 0 8px 24px rgba(245, 197, 66, 0.3);
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
     }
-
-    @media (max-width: 500px) {
-      .message { max-width: 90%; }
-      .chat-header { font-size: 0.95rem; padding: 10px 14px; }
-      .chat-input { padding: 8px 12px; gap: 6px; }
-      .chat-input textarea { font-size: 0.85rem; padding: 8px 14px; }
-      .chat-messages { padding: 12px; }
-      .message .avatar { width: 26px; height: 26px; font-size: 0.8rem; }
+    #result {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .status-ok { border-left: 4px solid #22c55e; }
+    .status-error { border-left: 4px solid #ef4444; }
+    .status-pending { border-left: 4px solid #facc15; }
+    .hidden { display: none; }
+    .model-help {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 4px;
     }
   </style>
 </head>
 <body>
-  <div class="chat-header">
-    <div class="left">
-      <i class="fa-solid fa-robot"></i>
-      <span>Danfer AI</span>
-    </div>
-    <div class="right">
-      <button id="clear-chat-btn" title="Clear chat"><i class="fa-solid fa-trash"></i></button>
-    </div>
+<div class="card">
+  <h1>🔌 OpenRouter Test</h1>
+  <p class="sub">Verify your API key, model, and system context are working.</p>
+
+  <div class="form-group">
+    <label for="apiKey">API Key</label>
+    <input type="text" id="apiKey" placeholder="sk-or-v1-..." value="">
   </div>
 
-  <main class="chat-area" id="chat-area">
-    <div id="auth-check"></div>
-  </main>
-
-  <div class="chat-input" id="chat-input-container" style="display:none;">
-    <textarea id="message-input" placeholder="Ask me anything about Danfer School…" rows="1" autocomplete="off"></textarea>
-    <button id="send-btn" aria-label="Send message"><i class="fa-solid fa-paper-plane"></i></button>
+  <div class="form-group">
+    <label for="model">Model</label>
+    <select id="model">
+      <option value="openrouter/free">openrouter/free (auto)</option>
+      <option value="meta-llama/llama-3.2-3b-instruct:free">Llama 3.2 3B (free)</option>
+      <option value="liquid/lfm-2.5-1.2b-instruct:free">LFM 2.5 1.2B (free)</option>
+      <option value="qwen/qwen3-coder:free">Qwen3 Coder (free)</option>
+      <option value="custom">Custom</option>
+    </select>
+    <input type="text" id="customModel" placeholder="Enter custom model ID" style="margin-top:6px; display:none;">
+    <div class="model-help">Use <code>openrouter/free</code> for automatic selection.</div>
   </div>
 
-  <script type="module">
-    import { auth, db } from './firebase-config.js';
-    import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-    import {
-      collection, addDoc, query, where, orderBy, getDocs, serverTimestamp,
-      getDoc, doc
-    } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+  <div class="form-group">
+    <label for="context">System Context (optional)</label>
+    <textarea id="context" placeholder="You are a helpful assistant..."></textarea>
+  </div>
 
-    const $ = id => document.getElementById(id);
-    const authCheckContainer = $('auth-check');
-    const chatInputContainer = $('chat-input-container');
-    let currentUser = null;
-    let aiConfig = null;
+  <div class="form-group">
+    <label for="testPrompt">Test Prompt</label>
+    <input type="text" id="testPrompt" placeholder="Say hello in one sentence" value="Say hello in one sentence.">
+  </div>
 
-    // ==================== FETCH AI CONFIG ====================
-    async function getAIConfig() {
-      if (aiConfig) return aiConfig;
-      try {
-        const snap = await getDoc(doc(db, "settings", "ai_config"));
-        if (snap.exists()) {
-          aiConfig = snap.data();
-          return aiConfig;
-        }
-      } catch (e) {
-        console.warn('Could not fetch AI config', e);
-      }
-      return null;
-    }
+  <button class="btn" id="testBtn">▶ Test Connection</button>
 
-    // ==================== CHAT UI ====================
-    function createChatInterface() {
-      chatInputContainer.style.display = 'flex';
+  <div id="result" class="hidden status-pending"></div>
+</div>
 
-      authCheckContainer.innerHTML = `
-        <div class="chat-messages" id="chat-messages">
-          <div class="message ai">
-            <div class="bubble-wrapper">
-              <div class="avatar"><i class="fa-solid fa-robot"></i></div>
-              <div>
-                <div class="message-sender">Danfer AI</div>
-                <div class="message-bubble">Hello! I'm Danfer AI, the intelligent assistant of Danfer School. How can I help you today? 👋</div>
-                <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
+<script>
+  (function() {
+    const apiKeyInput = document.getElementById('apiKey');
+    const modelSelect = document.getElementById('model');
+    const customModelInput = document.getElementById('customModel');
+    const contextInput = document.getElementById('context');
+    const testPromptInput = document.getElementById('testPrompt');
+    const testBtn = document.getElementById('testBtn');
+    const resultDiv = document.getElementById('result');
 
-      const messagesContainer = $('chat-messages');
-      const messageInput = $('message-input');
-      const sendBtn = $('send-btn');
-      const clearBtn = $('clear-chat-btn');
-
-      function addMessage(text, isUser, timestamp = new Date()) {
-        const div = document.createElement('div');
-        div.className = `message ${isUser ? 'user' : 'ai'}`;
-        const sender = isUser ? 'You' : 'Danfer AI';
-        const avatarIcon = isUser ? 'fa-user' : 'fa-robot';
-        const timeStr = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        div.innerHTML = `
-          <div class="bubble-wrapper">
-            <div class="avatar"><i class="fa-solid ${avatarIcon}"></i></div>
-            <div>
-              <div class="message-sender">${sender}</div>
-              <div class="message-bubble">${escapeHTML(text)}</div>
-              <div class="message-time">${timeStr}</div>
-            </div>
-          </div>
-        `;
-        messagesContainer.appendChild(div);
-        document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
-      }
-
-      function showTypingIndicator() {
-        const div = document.createElement('div');
-        div.className = 'message ai';
-        div.id = 'typing-indicator';
-        div.innerHTML = `
-          <div class="bubble-wrapper">
-            <div class="avatar"><i class="fa-solid fa-robot"></i></div>
-            <div>
-              <div class="message-sender">Danfer AI</div>
-              <div class="typing-indicator">
-                <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
-              </div>
-            </div>
-          </div>
-        `;
-        messagesContainer.appendChild(div);
-        document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
-      }
-
-      function removeTypingIndicator() {
-        const el = document.getElementById('typing-indicator');
-        if (el) el.remove();
-      }
-
-      function escapeHTML(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-      }
-
-      async function saveChatToFirestore(userMsg, aiReply) {
-        if (!currentUser) return;
-        try {
-          await addDoc(collection(db, "ai_chats"), {
-            uid: currentUser.uid,
-            userMessage: userMsg,
-            aiReply: aiReply,
-            timestamp: serverTimestamp()
-          });
-        } catch (e) { console.warn('Chat not saved', e); }
-      }
-
-      async function loadChatHistory() {
-        if (!currentUser) return;
-        try {
-          const q = query(collection(db, "ai_chats"), where("uid", "==", currentUser.uid), orderBy("timestamp", "asc"));
-          const snap = await getDocs(q);
-          snap.forEach(doc => {
-            const data = doc.data();
-            const ts = data.timestamp ? data.timestamp.toDate() : new Date();
-            addMessage(data.userMessage, true, ts);
-            addMessage(data.aiReply, false, ts);
-          });
-        } catch (e) { console.warn('Could not load history', e); }
-      }
-
-      // Clear chat
-      clearBtn.addEventListener('click', () => {
-        if (confirm('Clear all messages?')) {
-          messagesContainer.innerHTML = '';
-        }
-      });
-
-      // Check AI config and warn if missing
-      getAIConfig().then(config => {
-        if (!config || !config.apiKey) {
-          addMessage("The AI assistant is not fully configured yet. Please ask an admin to set the API key, model, and context.", false);
-        }
-      });
-
-      // ==================== AI CALL (OpenRouter) ====================
-      async function callAI(userMessage) {
-        const config = await getAIConfig();
-        const apiKey = config?.apiKey;
-        if (!apiKey) return null;
-
-        // Use configured model or fallback to fast free model
-        const model = config?.model || 'liquid/lfm-2.5-1.2b-thinking:free';
-        // Use configured context or fallback
-        const context = config?.context || 'You are Danfer AI, a helpful assistant for Danfer School. Reply short, friendly, and always in English.';
-
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 25000);
-        try {
-          const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${apiKey}`,
-              'Content-Type': 'application/json',
-              'HTTP-Referer': window.location.origin,
-              'X-Title': 'Danfer AI'
-            },
-            body: JSON.stringify({
-              model: model,
-              messages: [
-                { role: 'system', content: context },
-                { role: 'user', content: userMessage }
-              ],
-              max_tokens: 500
-            }),
-            signal: controller.signal
-          });
-          clearTimeout(timeout);
-          if (resp.status === 429) {
-            console.warn('Rate limited');
-            return null;
-          }
-          if (!resp.ok) {
-            const errData = await resp.json().catch(() => ({}));
-            console.warn('API error:', resp.status, errData);
-            return null;
-          }
-          const data = await resp.json();
-          return data.choices[0].message.content.trim();
-        } catch (e) {
-          clearTimeout(timeout);
-          console.error('AI call failed:', e);
-          return null;
-        }
-      }
-
-      async function sendMessage() {
-        const text = messageInput.value.trim();
-        if (!text) return;
-
-        addMessage(text, true);
-        messageInput.value = '';
-        messageInput.style.height = '44px';
-
-        showTypingIndicator();
-        const reply = await callAI(text);
-        removeTypingIndicator();
-
-        if (!reply) {
-          addMessage("I'm having trouble connecting to my AI brain right now. Please try again later, or contact the school office for immediate help.", false);
-        } else {
-          addMessage(reply, false);
-          saveChatToFirestore(text, reply);
-        }
-      }
-
-      sendBtn.addEventListener('click', sendMessage);
-      messageInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-      });
-
-      loadChatHistory();
-    }
-
-    // ==================== LOGIN PROMPT ====================
-    function showLoginPrompt() {
-      chatInputContainer.style.display = 'none';
-      authCheckContainer.innerHTML = `
-        <div class="login-prompt">
-          <i class="fa-solid fa-lock"></i>
-          <p>Please sign in to use the AI assistant</p>
-          <button onclick="window.location.href='login.html'">Sign In</button>
-        </div>
-      `;
-    }
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        currentUser = user;
-        createChatInterface();
+    // Toggle custom model input
+    modelSelect.addEventListener('change', function() {
+      if (this.value === 'custom') {
+        customModelInput.style.display = 'block';
       } else {
-        currentUser = null;
-        showLoginPrompt();
+        customModelInput.style.display = 'none';
       }
     });
-  </script>
+
+    // Load saved values from localStorage (optional)
+    const saved = {
+      apiKey: localStorage.getItem('test_api_key') || '',
+      model: localStorage.getItem('test_model') || 'openrouter/free',
+      context: localStorage.getItem('test_context') || '',
+      prompt: localStorage.getItem('test_prompt') || 'Say hello in one sentence.'
+    };
+    apiKeyInput.value = saved.apiKey;
+    modelSelect.value = saved.model;
+    if (saved.model === 'custom') {
+      customModelInput.style.display = 'block';
+      customModelInput.value = localStorage.getItem('test_custom_model') || '';
+    }
+    contextInput.value = saved.context;
+    testPromptInput.value = saved.prompt;
+
+    testBtn.addEventListener('click', async function() {
+      const apiKey = apiKeyInput.value.trim();
+      if (!apiKey) {
+        showResult('❌ Please enter an API key.', 'error');
+        return;
+      }
+
+      let model = modelSelect.value;
+      if (model === 'custom') {
+        model = customModelInput.value.trim();
+        if (!model) {
+          showResult('❌ Please enter a custom model ID.', 'error');
+          return;
+        }
+      }
+
+      const context = contextInput.value.trim();
+      const prompt = testPromptInput.value.trim() || 'Say hello in one sentence.';
+
+      // Save to localStorage
+      localStorage.setItem('test_api_key', apiKey);
+      localStorage.setItem('test_model', modelSelect.value);
+      if (modelSelect.value === 'custom') {
+        localStorage.setItem('test_custom_model', customModelInput.value.trim());
+      }
+      localStorage.setItem('test_context', context);
+      localStorage.setItem('test_prompt', prompt);
+
+      testBtn.disabled = true;
+      testBtn.textContent = '⏳ Testing...';
+      showResult('⏳ Sending request...', 'pending');
+
+      const messages = [];
+      if (context) {
+        messages.push({ role: 'system', content: context });
+      }
+      messages.push({ role: 'user', content: prompt });
+
+      try {
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+            'HTTP-Referer': window.location.origin,
+            'X-Title': 'OpenRouter Test'
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: messages,
+            max_tokens: 100
+          })
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          let errorMsg = `❌ HTTP ${response.status}`;
+          try {
+            const errJson = JSON.parse(errorText);
+            errorMsg += `: ${errJson.error?.message || errJson.message || errorText}`;
+          } catch {
+            errorMsg += `: ${errorText}`;
+          }
+          showResult(errorMsg, 'error');
+          return;
+        }
+
+        const data = await response.json();
+        const reply = data.choices?.[0]?.message?.content || 'No reply content.';
+        showResult(`✅ Success!\n\n📨 Reply:\n${reply}`, 'ok');
+      } catch (err) {
+        showResult(`❌ Network error: ${err.message}`, 'error');
+      } finally {
+        testBtn.disabled = false;
+        testBtn.textContent = '▶ Test Connection';
+      }
+    });
+
+    function showResult(text, type) {
+      resultDiv.classList.remove('hidden', 'status-ok', 'status-error', 'status-pending');
+      resultDiv.textContent = text;
+      if (type === 'ok') resultDiv.classList.add('status-ok');
+      else if (type === 'error') resultDiv.classList.add('status-error');
+      else if (type === 'pending') resultDiv.classList.add('status-pending');
+    }
+  })();
+</script>
 </body>
 </html>
