@@ -968,29 +968,166 @@ async function loadSettingsSection() {
     console.warn('Could not fetch profile:', e);
   }
 
+  // Load AI config
+  let aiApiKey = '', aiModel = '', aiContext = '';
+  try {
+    const aiConfigSnap = await getDoc(doc(db, "settings", "ai_config"));
+    if (aiConfigSnap.exists()) {
+      const data = aiConfigSnap.data();
+      aiApiKey = data.apiKey || '';
+      aiModel = data.model || '';
+      aiContext = data.context || '';
+    }
+  } catch (e) {
+    console.warn('Could not load AI config:', e);
+  }
+
   $('#admin-main').innerHTML = `
     <h2 class="section-title">Settings</h2>
+
+    <!-- Profile -->
     <div class="card">
       <h3>Profile</h3>
       <p><strong>Name:</strong> ${adminName}</p>
       <p><strong>Email:</strong> ${adminEmail}</p>
       <p><strong>Role:</strong> ${adminRole}</p>
     </div>
-    <div class="card"><h3>Theme</h3><button class="btn-primary" id="toggle-theme-btn"><i class="fa-solid fa-palette"></i> Toggle Light/Dark</button></div>
-    <div class="card"><h3>Change Password</h3><input type="password" id="new-password" placeholder="New password"><button class="btn-primary" id="change-password-btn"><i class="fa-solid fa-key"></i> Update</button><p class="msg" id="password-msg"></p></div>
+
+    <!-- Theme -->
     <div class="card">
-      <h3>OpenRouter AI Key</h3>
+      <h3>Theme</h3>
+      <button class="btn-primary" id="toggle-theme-btn"><i class="fa-solid fa-palette"></i> Toggle Light/Dark</button>
+    </div>
+
+    <!-- Change Password -->
+    <div class="card">
+      <h3>Change Password</h3>
+      <input type="password" id="new-password" placeholder="New password">
+      <button class="btn-primary" id="change-password-btn"><i class="fa-solid fa-key"></i> Update</button>
+      <p class="msg" id="password-msg"></p>
+    </div>
+
+    <!-- AI Configuration -->
+    <div class="card">
+      <h3><i class="fa-solid fa-robot"></i> AI Configuration</h3>
       <div class="form-group">
-        <label>API Key</label>
+        <label for="ai-api-key">OpenRouter API Key</label>
+        <input type="text" id="ai-api-key" placeholder="sk-or-..." value="${aiApiKey}">
+      </div>
+      <div class="form-group">
+        <label for="ai-model">Model</label>
+        <select id="ai-model">
+          <option value="qwen/qwen3-coder:free" ${aiModel === 'qwen/qwen3-coder:free' ? 'selected' : ''}>Qwen3 Coder (free)</option>
+          <option value="meta-llama/llama-3.3-70b-instruct:free" ${aiModel === 'meta-llama/llama-3.3-70b-instruct:free' ? 'selected' : ''}>Llama 3.3 70B (free)</option>
+          <option value="google/gemini-2.0-flash-exp:free" ${aiModel === 'google/gemini-2.0-flash-exp:free' ? 'selected' : ''}>Gemini 2.0 Flash (free)</option>
+          <option value="nvidia/nemotron-3-super:free" ${aiModel === 'nvidia/nemotron-3-super:free' ? 'selected' : ''}>Nemotron 3 Super (free)</option>
+          <option value="custom" ${!['qwen/qwen3-coder:free','meta-llama/llama-3.3-70b-instruct:free','google/gemini-2.0-flash-exp:free','nvidia/nemotron-3-super:free'].includes(aiModel) ? 'selected' : ''}>Custom</option>
+        </select>
+        <input type="text" id="ai-model-custom" placeholder="Custom model ID" value="${!['qwen/qwen3-coder:free','meta-llama/llama-3.3-70b-instruct:free','google/gemini-2.0-flash-exp:free','nvidia/nemotron-3-super:free'].includes(aiModel) ? aiModel : ''}" style="margin-top:6px; display: ${!['qwen/qwen3-coder:free','meta-llama/llama-3.3-70b-instruct:free','google/gemini-2.0-flash-exp:free','nvidia/nemotron-3-super:free'].includes(aiModel) ? 'block' : 'none'};">
+      </div>
+      <div class="form-group">
+        <label for="ai-context">System Context (Instructions for the AI)</label>
+        <textarea id="ai-context" rows="6" placeholder="Enter the system prompt for the AI…">${aiContext}</textarea>
+        <div style="margin-top: 8px;">
+          <button class="btn-primary btn-sm" id="upload-context-btn" style="width:auto;"><i class="fa-solid fa-upload"></i> Upload .txt</button>
+          <input type="file" id="context-file-input" accept=".txt" style="display:none;">
+        </div>
+        <p style="font-size:0.75rem; color:var(--color-text-secondary); margin-top:4px;">Upload a .txt file to replace the context above.</p>
+      </div>
+      <button class="btn-primary" id="save-ai-config-btn"><i class="fa-solid fa-save"></i> Save AI Configuration</button>
+      <p class="msg" id="ai-config-msg"></p>
+    </div>
+
+    <!-- OpenRouter AI Key (legacy, kept for backward compatibility) -->
+    <div class="card">
+      <h3>Legacy OpenRouter AI Key</h3>
+      <div class="form-group">
+        <label>API Key (deprecated, use the new AI config above)</label>
         <input type="text" id="openrouter-key" placeholder="sk-or-...">
       </div>
-      <button class="btn-primary" id="save-api-key-btn"><i class="fa-solid fa-save"></i> Save Key</button>
+      <button class="btn-primary" id="save-api-key-btn"><i class="fa-solid fa-save"></i> Save Key (Legacy)</button>
       <p class="msg" id="api-key-msg"></p>
     </div>
-    <div class="card"><h3>Danger Zone</h3><button class="btn-primary btn-danger" id="reset-firestore-btn"><i class="fa-solid fa-trash"></i> Reset Data</button><p class="msg" id="reset-msg"></p></div>
+
+    <!-- Danger Zone -->
+    <div class="card">
+      <h3>Danger Zone</h3>
+      <button class="btn-primary btn-danger" id="reset-firestore-btn"><i class="fa-solid fa-trash"></i> Reset Data</button>
+      <p class="msg" id="reset-msg"></p>
+    </div>
   `;
 
-  // Load current API key
+  // ====== AI CONFIG HANDLERS ======
+
+  // Toggle custom model input
+  const modelSelect = $('#ai-model');
+  const customModelInput = $('#ai-model-custom');
+  modelSelect.addEventListener('change', () => {
+    if (modelSelect.value === 'custom') {
+      customModelInput.style.display = 'block';
+    } else {
+      customModelInput.style.display = 'none';
+    }
+  });
+
+  // File upload for context
+  const uploadBtn = $('#upload-context-btn');
+  const fileInput = $('#context-file-input');
+  uploadBtn.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const content = ev.target.result;
+      $('#ai-context').value = content;
+      const msg = $('#ai-config-msg');
+      msg.textContent = 'Context loaded from file.';
+      msg.className = 'msg success';
+    };
+    reader.readAsText(file);
+    fileInput.value = ''; // reset
+  });
+
+  // Save AI config
+  $('#save-ai-config-btn').addEventListener('click', async () => {
+    const apiKey = $('#ai-api-key').value.trim();
+    let model = modelSelect.value;
+    if (model === 'custom') {
+      model = customModelInput.value.trim();
+      if (!model) {
+        const msg = $('#ai-config-msg');
+        msg.textContent = 'Please enter a custom model ID.';
+        msg.className = 'msg error';
+        return;
+      }
+    }
+    const context = $('#ai-context').value.trim();
+
+    const msg = $('#ai-config-msg');
+    if (!apiKey) {
+      msg.textContent = 'API Key is required.';
+      msg.className = 'msg error';
+      return;
+    }
+
+    try {
+      await setDoc(doc(db, "settings", "ai_config"), {
+        apiKey,
+        model,
+        context
+      }, { merge: true });
+      msg.textContent = 'AI configuration saved successfully!';
+      msg.className = 'msg success';
+    } catch (e) {
+      msg.textContent = 'Error: ' + e.message;
+      msg.className = 'msg error';
+    }
+  });
+
+  // ====== LEGACY API KEY HANDLER (kept for compatibility) ======
+
+  // Load legacy API key
   try {
     const docSnap = await getDoc(doc(db, "settings", "api_keys"));
     if (docSnap.exists()) {
@@ -1000,7 +1137,7 @@ async function loadSettingsSection() {
     console.error(e);
   }
 
-  // Save API key
+  // Save legacy API key
   $('#save-api-key-btn').addEventListener('click', async () => {
     const key = $('#openrouter-key').value.trim();
     const msg = $('#api-key-msg');
