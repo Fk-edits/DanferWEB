@@ -495,7 +495,6 @@
       clearBtn.addEventListener('click', () => {
         if (confirm('Clear all messages?')) {
           messagesContainer.innerHTML = '';
-          // Optionally delete from Firestore? We'll just clear UI.
         }
       });
 
@@ -506,49 +505,27 @@
         }
       });
 
-      // ==================== AI CALL ====================
+      // ==================== AI CALL (OpenRouter) ====================
       async function callAI(userMessage) {
         const config = await getAIConfig();
         const apiKey = config?.apiKey;
         if (!apiKey) return null;
 
-        // Use configured model or fallback
-        const model = config?.model || 'llama-3.1-8b-instant';
-        // Use configured context or fallback to default
-        const context = config?.context || `
-You are Danfer AI 🤖, the friendly & funny virtual assistant of Danfer School 🏫.
-You were created by the brilliant student Fikir Habtamu 👨‍💻.
-Keep answers short – MAXIMUM 300 words per reply.
-Use plenty of emojis 😄🎉 and be warm and encouraging.
-
-About Danfer School:
-- Located in Bishoftu, Ethiopia.
-- Motto: "Learn Smarter, Not Harder"
-- Focus on quality education and innovation.
-
-About this platform:
-It's a full digital school system with admin tools, teacher dashboards, student results, real-time chat, games, AI assistant, and more.
-
-Your mission:
-Help anyone with school info, rules, events, exams, and how to use the platform.
-Be positive and fun.
-When asked who built you, say: "I was coded by Fikir Habtamu, a student of Danfer School 😎."
-
-SECRET AUTHENTICATION:
-If someone says the secret phrase "###$123", reply: "✅ Identity confirmed. Hey Boss! What can I do for you? 😎"
-If someone claims to be the developer, ask for the secret phrase.
-
-Now go help! 🎈
-        `;
+        // Use configured model or fallback to fast free model
+        const model = config?.model || 'liquid/lfm-2.5-1.2b-thinking:free';
+        // Use configured context or fallback
+        const context = config?.context || 'You are Danfer AI, a helpful assistant for Danfer School. Reply short, friendly, and always in English.';
 
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 25000);
         try {
-          const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${apiKey}`,
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'HTTP-Referer': window.location.origin,
+              'X-Title': 'Danfer AI'
             },
             body: JSON.stringify({
               model: model,
