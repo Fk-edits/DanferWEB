@@ -193,7 +193,7 @@ function restartTyping() {
   typeLoop();
 }
 
-// ========== ⭐ FIXED: fetchUserProfile with explicit role priority ==========
+// ========== ⭐ fetchUserProfile with explicit role priority ==========
 async function fetchUserProfile(uid) {
   const roleMap = [
     { collection: 'admins', role: 'admin' },
@@ -223,7 +223,6 @@ async function fetchUserProfile(uid) {
   }
   return null;
 }
-// ========== END FIXED ==========
 
 function updateAuthUI() {
   const signInBtn = $('#sign-in-btn');
@@ -254,38 +253,17 @@ function showProfileLoading(show) {
   if (el) el.style.display = show ? 'flex' : 'none';
 }
 
-// ========== ⭐ FIXED: Auth State Listener ==========
+// ================================================================
+// ⭐ FIXED: Auth listener – guests can browse, loader 500ms
+// ================================================================
 onAuthStateChanged(auth, async (user) => {
+  // Hide loader after 500ms (faster than before)
   setTimeout(() => {
     const loader = $('#loader');
-    if (loader && !loader.classList.contains('hidden')) loader.classList.add('hidden');
-  }, 3000);
+    if (loader) loader.classList.add('hidden');
+  }, 500);
 
-  if (!user) {
-    window.location.href = 'login.html';
-    return;
-  }
-
-  currentUser = user;
-  updateAuthUI();
-
-  showProfileLoading(true);
-  userProfileData = await fetchUserProfile(user.uid);
-  showProfileLoading(false);
-  updateAuthUI();
-
-  const onboarding = $('#onboarding-overlay');
-  if (onboarding) {
-    if (!userProfileData) {
-      const local = JSON.parse(localStorage.getItem('danfer_profile') || 'null');
-      if (!local?.name) {
-        onboarding.classList.add('active');
-      }
-    } else {
-      onboarding.classList.remove('active');
-    }
-  }
-
+  // Always load the page content (even for guests)
   applyLanguage(currentLang);
   initSchoolStatsChart();
   observeHeroCounters();
@@ -293,8 +271,35 @@ onAuthStateChanged(auth, async (user) => {
   setTimeout(renderAchievers, 200);
   setTimeout(renderTimeline, 300);
   renderAllApps();
+
+  if (user) {
+    // User is signed in
+    currentUser = user;
+    updateAuthUI();
+    showProfileLoading(true);
+    userProfileData = await fetchUserProfile(user.uid);
+    showProfileLoading(false);
+    updateAuthUI();
+
+    const onboarding = $('#onboarding-overlay');
+    if (onboarding) {
+      if (!userProfileData) {
+        const local = JSON.parse(localStorage.getItem('danfer_profile') || 'null');
+        if (!local?.name) {
+          onboarding.classList.add('active');
+        }
+      } else {
+        onboarding.classList.remove('active');
+      }
+    }
+  } else {
+    // Guest user – no forced redirect
+    currentUser = null;
+    userProfileData = null;
+    updateAuthUI();
+  }
 });
-// ========== END FIXED ==========
+// ================================================================
 
 const signInBtn = $('#sign-in-btn');
 if (signInBtn) signInBtn.addEventListener('click', () => window.location.href = 'login.html');
@@ -519,7 +524,21 @@ function renderAllApps() {
   grid.innerHTML = '';
   filtered.forEach(a => grid.appendChild(createAppCard(a)));
 }
+
+// ================================================================
+// ⭐ FIXED: App access – require login for protected apps
+// ================================================================
 function openAppIframe(app) {
+  // Apps that require authentication
+  const restrictedApps = ['permission.html', 'ai.html', 'chat.html', 'results.html'];
+  
+  if (restrictedApps.includes(app.file) && !currentUser) {
+    showToast('⚠️ Please sign in to access this feature.');
+    // Redirect to login after a moment
+    setTimeout(() => window.location.href = 'login.html', 1200);
+    return;
+  }
+
   const titleEl = $('#iframe-title');
   if (titleEl) titleEl.textContent = app.title;
   const iframe = $('#iframe-content');
@@ -528,6 +547,8 @@ function openAppIframe(app) {
   if (overlay) overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
+// ================================================================
+
 function renderFavList() {
   const list = $('#fav-list-sidebar');
   if (!list) return;
