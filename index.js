@@ -35,6 +35,8 @@ const achieversData = [
   { name: 'Hermol', cat: 'gpa', achievement: '512/600 – Grade 12 Matrics', img: 'img8.jpg' },
   { name: 'Eyob', cat: 'gpa', achievement: '410/600 – Grade 12 Matrics', img: 'img9.jpg' },
   { name: 'Amana Mitiku', cat: 'gpa', achievement: '409/600 – Grade 12 Matrics', img: 'img10.jpg' },
+
+   { name: 'Nathanael Mandefro', cat: 'it', achievement: 'Built this web platform 🚀', img: 'nati.jpg' },
 ];
 
 const timelineData = [
