@@ -2,17 +2,27 @@ import { auth, db } from './firebase-config.js';
 import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 import { collection, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
-// ==================== DATA ====================
 const appsData = [
+  // ===== Tools =====
   { id: 'a1', title: 'ASK Permission', icon: 'fa-clipboard-check', category: 'tools', file: 'permission.html' },
   { id: 'a2', title: 'AI', icon: 'fa-brain', category: 'tools', file: 'ai.html' },
   { id: 'a3', title: 'Chat', icon: 'fa-comments', category: 'tools', file: 'chat.html' },
   { id: 'a4', title: 'News', icon: 'fa-newspaper', category: 'tools', file: 'news.html' },
   { id: 'a7', title: 'Result', icon: 'fa-chart-line', category: 'tools', file: 'results.html' },
+
+  // ===== New Apps (Coming Soon) =====
+  { id: 'a12', title: 'School Registration', icon: 'fa-user-plus', category: 'tools', file: 'soon.html' },
+  { id: 'a13', title: 'School Calendar', icon: 'fa-calendar-days', category: 'tools', file: 'soon.html' },
+  { id: 'a14', title: 'Events', icon: 'fa-calendar-check', category: 'tools', file: 'soon.html' },
+  { id: 'a15', title: 'Gallery', icon: 'fa-images', category: 'tools', file: 'soon.html' },
+
+  // ===== Learning =====
   { id: 'a9', title: 'Science', icon: 'fa-book', category: 'learning', file: 'soon.html' },
   { id: 'a10', title: 'Quizzes', icon: 'fa-pen-to-square', category: 'learning', file: 'soon.html' },
-  { id: 'a11', title: 'Games', icon: 'fa-gamepad', category: 'fun', file: 'game.html' },
   { id: 'a8', title: 'Dev', icon: 'fa-code', category: 'learning', file: 'dev.html' },
+
+  // ===== Fun =====
+  { id: 'a11', title: 'Games', icon: 'fa-gamepad', category: 'fun', file: 'game.html' },
 ];
 
 const staffData = [
