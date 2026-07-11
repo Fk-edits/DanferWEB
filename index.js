@@ -22,14 +22,19 @@ const staffData = [
 ];
 
 const achieversData = [
-  { name: 'Jamal Williams', cat: 'gpa', achievement: '4.0 GPA Valedictorian', img: 'https://randomuser.me/api/portraits/men/11.jpg' },
-  { name: 'Alex Chen', cat: 'it', achievement: 'National Coding Champion', img: 'https://randomuser.me/api/portraits/men/22.jpg' },
-  { name: 'Maria Rodriguez', cat: 'gpa', achievement: '3.9 GPA Honor Roll', img: 'https://randomuser.me/api/portraits/women/33.jpg' },
-  { name: 'Sophie Park', cat: 'art', achievement: 'State Art Competition Winner', img: 'https://randomuser.me/api/portraits/women/55.jpg' },
-  { name: 'Ethan Brown', cat: 'football', achievement: 'Team Captain State Finals', img: 'https://randomuser.me/api/portraits/men/44.jpg' },
-  { name: 'Olivia Davis', cat: 'debate', achievement: 'Regional Debate Champion', img: 'https://randomuser.me/api/portraits/women/66.jpg' },
-  { name: 'Noah Martinez', cat: 'it', achievement: 'App Development Award', img: 'https://randomuser.me/api/portraits/men/77.jpg' },
-  { name: 'Ava Thompson', cat: 'gpa', achievement: '3.8 GPA Honor Roll', img: 'https://randomuser.me/api/portraits/women/88.jpg' },
+  // ===== Grade 8 Ministry Exam Top Scorers =====
+  { name: 'Robera Tariku', cat: 'gpa', achievement: '92.38% – Grade 8 Ministry Exam', img: 'ima1.jpg' },
+  { name: 'Mersimoi Adamu', cat: 'gpa', achievement: '90.24% – Grade 8 Ministry Exam', img: 'ima2.jpg' },
+  { name: 'Lensa Tilahun', cat: 'gpa', achievement: '89.88% – Grade 8 Ministry Exam', img: 'ima3.jpg' },
+  { name: 'Yafet Mikael', cat: 'gpa', achievement: '87.14% – Grade 8 Ministry Exam', img: 'ima4.jpg' },
+  { name: 'Kirstina Tilahun', cat: 'gpa', achievement: '86.90% – Grade 8 Ministry Exam', img: 'ima5.jpg' },
+
+  // ===== Grade 12 Matrics Top Scorers =====
+  { name: 'Ahmed Gizachew', cat: 'gpa', achievement: '543/600 – Grade 12 Matrics', img: 'ima6.jpg' },
+  { name: 'Bethel Seyoum', cat: 'gpa', achievement: '423/600 – Grade 12 Matrics', img: 'ima7.jpg' },
+  { name: 'Hermol', cat: 'gpa', achievement: '512/600 – Grade 12 Matrics', img: 'ima8.jpg' },
+  { name: 'Eyob', cat: 'gpa', achievement: '410/600 – Grade 12 Matrics', img: 'ima9.jpg' },
+  { name: 'Amana Mitiku', cat: 'gpa', achievement: '409/600 – Grade 12 Matrics', img: 'ima10.jpg' },
 ];
 
 const timelineData = [
