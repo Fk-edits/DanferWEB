@@ -16,7 +16,7 @@ const appsData = [
 ];
 
 const staffData = [
-  { name: 'Mr. Dejene', role: 'director', roleLabel: 'S/Director', subject: 'School Leadership', img: 'djne.png', bio: 'Visionary leader with 20+ years in education.' },
+  { name: 'Mr. Ewnetu Amare', role: 'Founder', roleLabel: 'School Founder', subject: 'School Leadership', img: 'ewnetu.png', bio: 'Visionary leader with 20+ years in education.' },
   { name: 'Mr. Baba', role: 'leader', roleLabel: 'Unit Leader', subject: 'Administration', img: 'img.png', bio: 'MA in School Administration. 15 years experience.' },
   { name: 'Ms. Mama', role: 'teacher', roleLabel: 'Teacher', subject: 'Mathematics', img: 'img.png', bio: 'AP Calculus instructor and math competition coach.' },
   { name: 'Mr. ema', role: 'teacher', roleLabel: 'Teacher', subject: 'Science', img: 'img.png', bio: 'STEM program coordinator and science fair mentor.' },
