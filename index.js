@@ -27,7 +27,7 @@ const achieversData = [
   { name: 'Mersimoi Adamu', cat: 'gpa', achievement: '90.24% – Grade 8 Ministry Exam', img: 'ima2.jpg' },
   { name: 'Lensa Tilahun', cat: 'gpa', achievement: '89.88% – Grade 8 Ministry Exam', img: 'ima3.jpg' },
   { name: 'Yafet Mikael', cat: 'gpa', achievement: '87.14% – Grade 8 Ministry Exam', img: 'ima4.jpg' },
-  { name: 'Kirstina Tilahun', cat: 'gpa', achievement: '86.90% – Grade 8 Ministry Exam', img: 'ima5.jpg' },
+  { name: 'Kirstina Tilaye', cat: 'gpa', achievement: '86.90% – Grade 8 Ministry Exam', img: 'ima5.jpg' },
 
   // ===== Grade 12 Matrics Top Scorers =====
   { name: 'Ahmed Gizachew', cat: 'gpa', achievement: '543/600 – Grade 12 Matrics', img: 'ima6.jpg' },
