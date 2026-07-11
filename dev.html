@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Danfer School – Development</title>
+  <title>Nexora – Danfer School Tech Team</title>
 
-  <!-- Read saved theme -->
+  <!-- Read saved theme immediately -->
   <script>
     (function(){
       var theme = localStorage.getItem('danfer_theme') || 'dark';
@@ -21,7 +21,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <!-- Theme -->
+  <!-- Central theme -->
   <link rel="stylesheet" href="theme.css">
 
   <style>
@@ -32,209 +32,273 @@
       background: var(--color-background);
       color: var(--color-text-primary);
       min-height: 100vh;
-      padding: 40px 20px;
       transition: background 0.4s, color 0.4s;
+      overflow-x: hidden;
     }
+
     .container {
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 0 auto;
+      padding: 0 24px;
     }
 
     /* ===== HEADER ===== */
-    .header {
-      text-align: center;
-      margin-bottom: 48px;
+    .dev-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(26,58,92,0.06);
+      margin-bottom: 40px;
     }
-    .header h1 {
-      font-size: 2.8rem;
-      font-weight: 900;
-      letter-spacing: -1px;
-      background: linear-gradient(135deg, var(--color-primary), var(--color-accent), var(--color-primary));
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: gradientShift 6s ease infinite;
-      margin-bottom: 8px;
+    [data-theme="dark"] .dev-header {
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .header h1 i {
-      -webkit-text-fill-color: transparent;
-      margin-right: 4px;
-    }
-    .header p {
-      color: var(--color-text-secondary);
-      font-size: 1.15rem;
-      font-weight: 400;
-      letter-spacing: 0.3px;
-    }
-    @keyframes gradientShift {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    /* ===== CARDS (premium) ===== */
-    .card {
-      background: var(--color-card);
-      border: 1px solid rgba(26, 58, 92, 0.06);
-      border-radius: 24px;
-      padding: 32px 36px;
-      margin-bottom: 28px;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    [data-theme="dark"] .card {
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
-      border-color: var(--color-accent);
-    }
-    [data-theme="dark"] .card:hover {
-      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
-    }
-
-    .card h2 {
+    .dev-header .logo {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: var(--color-text-primary);
-      letter-spacing: -0.3px;
     }
-    .card h2 i {
-      color: var(--color-accent);
-      font-size: 1.4rem;
-      background: none;
-      -webkit-text-fill-color: var(--color-accent);
+    .dev-header .logo img {
+      height: 50px;
+      width: auto;
+      background: #000;
+      padding: 6px 12px;
+      border-radius: 8px;
     }
-    [data-theme="dark"] .card h2 i {
-      -webkit-text-fill-color: var(--color-accent);
-    }
-
-    /* ===== DEVELOPER INFO ===== */
-    .dev-info {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      flex-wrap: wrap;
-    }
-    .dev-avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.4rem;
-      color: #fff;
-      flex-shrink: 0;
-      box-shadow: 0 8px 32px rgba(26, 58, 92, 0.25);
-    }
-    [data-theme="dark"] .dev-avatar {
-      box-shadow: 0 8px 32px rgba(245, 197, 66, 0.15);
-    }
-    .dev-details { flex: 1; }
-    .dev-details p {
-      margin-bottom: 6px;
-      font-size: 0.95rem;
-      color: var(--color-text-secondary);
-      line-height: 1.6;
-    }
-    .dev-details strong {
-      color: var(--color-text-primary);
-      font-weight: 600;
-    }
-    .dev-details .bio {
-      color: var(--color-text-secondary);
-      margin-top: 8px;
-      font-size: 0.95rem;
-      border-left: 3px solid var(--color-accent);
-      padding-left: 14px;
-    }
-
-    /* ===== FEATURES GRID ===== */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-top: 8px;
-    }
-    .feature-item {
-      background: var(--color-background);
-      border: 1px solid rgba(26, 58, 92, 0.06);
-      border-radius: 16px;
-      padding: 22px 16px;
-      text-align: center;
-      transition: all 0.3s;
-      cursor: default;
-    }
-    [data-theme="dark"] .feature-item {
-      border: 1px solid rgba(255, 255, 255, 0.04);
-    }
-    .feature-item:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-      border-color: var(--color-accent);
-    }
-    [data-theme="dark"] .feature-item:hover {
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-    .feature-item i {
-      font-size: 2.4rem;
+    .dev-header .logo h1 {
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
       background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 10px;
-      display: block;
     }
-    .feature-item h4 {
-      font-size: 1rem;
+    .dev-header .back-link a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .dev-header .back-link a:hover {
+      color: var(--color-primary);
+    }
+    [data-theme="dark"] .dev-header .back-link a:hover {
+      color: var(--color-accent);
+    }
+
+    /* ===== HERO ===== */
+    .dev-hero {
+      text-align: center;
+      padding: 60px 0 40px;
+      position: relative;
+    }
+    .dev-hero .badge {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 50px;
+      background: var(--color-accent);
+      color: var(--color-primary);
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+    [data-theme="dark"] .dev-hero .badge {
+      background: var(--color-accent);
+      color: var(--color-primary);
+    }
+    .dev-hero h2 {
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+    .dev-hero p {
+      font-size: 1.1rem;
+      color: var(--color-text-secondary);
+      max-width: 600px;
+      margin: 0 auto 24px;
+      line-height: 1.7;
+    }
+    .dev-hero .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 32px;
+      border-radius: 50px;
+      background: var(--color-primary);
+      color: #fff;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 4px 16px rgba(26,58,92,0.25);
+    }
+    [data-theme="dark"] .dev-hero .cta-btn {
+      background: var(--color-accent);
+      color: var(--color-primary);
+      box-shadow: 0 4px 16px rgba(245,197,66,0.2);
+    }
+    .dev-hero .cta-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 28px rgba(26,58,92,0.35);
+    }
+    [data-theme="dark"] .dev-hero .cta-btn:hover {
+      box-shadow: 0 8px 28px rgba(245,197,66,0.3);
+    }
+
+    /* ===== TEAM SECTION ===== */
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--color-text-primary);
+      position: relative;
+      display: inline-block;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: var(--color-accent);
+      border-radius: 4px;
+    }
+    .section-subtitle {
+      color: var(--color-text-secondary);
+      margin-bottom: 32px;
+      font-size: 0.95rem;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-top: 16px;
+    }
+    .team-card {
+      background: var(--color-card);
+      border: 1px solid rgba(26,58,92,0.06);
+      border-radius: 24px;
+      padding: 32px 24px 24px;
+      text-align: center;
+      transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+      position: relative;
+      overflow: hidden;
+    }
+    [data-theme="dark"] .team-card {
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .team-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .team-card:hover::before {
+      transform: scaleX(1);
+    }
+    .team-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      border-color: var(--color-accent);
+    }
+    [data-theme="dark"] .team-card:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .team-card .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(26,58,92,0.15);
+    }
+    [data-theme="dark"] .team-card .avatar {
+      box-shadow: 0 8px 24px rgba(245,197,66,0.15);
+    }
+    .team-card h3 {
+      font-size: 1.3rem;
       font-weight: 700;
       margin-bottom: 4px;
       color: var(--color-text-primary);
     }
-    .feature-item p {
-      font-size: 0.8rem;
+    .team-card .role {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-accent);
+      margin-bottom: 8px;
+    }
+    .team-card .bio {
+      font-size: 0.9rem;
       color: var(--color-text-secondary);
-      line-height: 1.5;
+      line-height: 1.6;
+    }
+    .team-card .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .team-card .social-links a {
+      color: var(--color-text-secondary);
+      font-size: 1.2rem;
+      transition: all 0.25s;
+    }
+    .team-card .social-links a:hover {
+      color: var(--color-primary);
+      transform: translateY(-2px);
+    }
+    [data-theme="dark"] .team-card .social-links a:hover {
+      color: var(--color-accent);
     }
 
-    /* ===== TOOLS GRID ===== */
+    /* ===== TECH & TOOLS ===== */
     .tools-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 14px;
-      margin-top: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 16px;
+      margin-top: 12px;
     }
     .tool-item {
-      background: var(--color-background);
-      border: 1px solid rgba(26, 58, 92, 0.06);
-      border-radius: 14px;
-      padding: 18px 12px;
+      background: var(--color-card);
+      border: 1px solid rgba(26,58,92,0.06);
+      border-radius: 16px;
+      padding: 20px 12px;
       text-align: center;
       transition: all 0.3s;
     }
     [data-theme="dark"] .tool-item {
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255,255,255,0.06);
     }
     .tool-item:hover {
       transform: translateY(-4px);
       border-color: var(--color-accent);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
-    }
-    [data-theme="dark"] .tool-item:hover {
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
     }
     .tool-item i {
-      font-size: 1.8rem;
+      font-size: 2.2rem;
       color: var(--color-primary);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       display: block;
     }
     [data-theme="dark"] .tool-item i {
@@ -242,402 +306,227 @@
     }
     .tool-item span {
       display: block;
-      font-size: 0.75rem;
-      color: var(--color-text-secondary);
-      margin-top: 2px;
+      font-size: 0.8rem;
       font-weight: 500;
-    }
-
-    /* ===== TIMELINE ===== */
-    .timeline {
-      position: relative;
-      padding-left: 50px;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 22px;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: rgba(26, 58, 92, 0.12);
-      border-radius: 3px;
-    }
-    [data-theme="dark"] .timeline::before {
-      background: rgba(255, 255, 255, 0.08);
-    }
-    .timeline-item {
-      position: relative;
-      margin-bottom: 32px;
-      transition: all 0.3s;
-    }
-    .timeline-item .pin {
-      position: absolute;
-      left: -36px;
-      top: 8px;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: var(--color-primary);
-      border: 4px solid var(--color-background);
-      z-index: 2;
-      box-shadow: 0 0 0 5px rgba(26, 58, 92, 0.1);
-      transition: all 0.3s;
-    }
-    [data-theme="dark"] .timeline-item .pin {
-      background: var(--color-accent);
-      box-shadow: 0 0 0 5px rgba(245, 197, 66, 0.15);
-    }
-    .timeline-item:hover .pin {
-      transform: scale(1.2);
-      box-shadow: 0 0 0 10px rgba(26, 58, 92, 0.08);
-    }
-    [data-theme="dark"] .timeline-item:hover .pin {
-      box-shadow: 0 0 0 10px rgba(245, 197, 66, 0.1);
-    }
-    .timeline-card {
-      background: var(--color-card);
-      border: 1px solid rgba(26, 58, 92, 0.06);
-      border-radius: 16px;
-      padding: 20px 24px;
-      transition: all 0.3s;
-    }
-    [data-theme="dark"] .timeline-card {
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .timeline-card:hover {
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
-      border-color: var(--color-accent);
-    }
-    [data-theme="dark"] .timeline-card:hover {
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    }
-    .timeline-card h3 {
-      color: var(--color-primary);
-      font-size: 1.1rem;
-      margin-bottom: 4px;
-      font-weight: 700;
-    }
-    [data-theme="dark"] .timeline-card h3 {
-      color: var(--color-accent);
-    }
-    .timeline-card p {
       color: var(--color-text-secondary);
-      font-size: 0.9rem;
-      line-height: 1.6;
     }
 
-    /* ===== ACKNOWLEDGEMENTS ===== */
-    .acknowledgement-card {
+    /* ===== CONTACT ===== */
+    .contact-card {
       background: var(--color-card);
-      border: 1px solid rgba(26, 58, 92, 0.06);
-      border-left: 6px solid var(--color-accent);
-      border-radius: 0 24px 24px 0;
-      padding: 32px 36px;
-      margin-bottom: 28px;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
-      position: relative;
-      transition: all 0.35s;
-    }
-    [data-theme="dark"] .acknowledgement-card {
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-left: 6px solid var(--color-accent);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-    }
-    .acknowledgement-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.06);
-    }
-    [data-theme="dark"] .acknowledgement-card:hover {
-      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
-    }
-    .acknowledgement-card::before {
-      content: '\201C';
-      position: absolute;
-      top: 10px;
-      left: 20px;
-      font-size: 6rem;
-      color: var(--color-accent);
-      opacity: 0.1;
-      font-family: serif;
-      line-height: 1;
-      pointer-events: none;
-    }
-    .acknowledgement-card h2 {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-bottom: 18px;
-      color: var(--color-text-primary);
-      position: relative;
-      z-index: 1;
-    }
-    .acknowledgement-card h2 i {
-      color: var(--color-accent);
-      font-size: 1.3rem;
-    }
-    .acknowledgement-card p {
-      font-size: 1rem;
-      line-height: 1.8;
-      color: var(--color-text-secondary);
-      margin-bottom: 8px;
-      position: relative;
-      z-index: 1;
-    }
-    .acknowledgement-card p strong {
-      color: var(--color-text-primary);
-      font-weight: 600;
-    }
-
-    /* ===== NEXORA FOOTER ===== */
-    .nexora-footer {
-      margin-top: 40px;
-      text-align: center;
-      padding: 36px 24px;
-      background: linear-gradient(135deg, rgba(26, 58, 92, 0.04), rgba(245, 197, 66, 0.04));
-      border: 1px solid rgba(26, 58, 92, 0.06);
-      border-radius: 24px;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      transition: all 0.3s;
-    }
-    [data-theme="dark"] .nexora-footer {
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      background: linear-gradient(135deg, rgba(15, 26, 46, 0.5), rgba(245, 197, 66, 0.05));
-    }
-    .nexora-footer:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
-    }
-    .nexora-footer img {
-      width: 80px;
-      height: 80px;
+      border: 1px solid rgba(26,58,92,0.06);
       border-radius: 20px;
-      margin-bottom: 12px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-      object-fit: cover;
+      padding: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-top: 16px;
     }
-    .nexora-footer h3 {
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-bottom: 6px;
-      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    [data-theme="dark"] .contact-card {
+      border: 1px solid rgba(255,255,255,0.06);
     }
-    .nexora-footer p {
+    .contact-card .info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .contact-card .info .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 600;
       color: var(--color-text-secondary);
-      margin: 4px 0;
-      font-size: 0.95rem;
+      letter-spacing: 0.5px;
     }
-    .nexora-telegram {
+    .contact-card .info .value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+    .contact-card .info .value i {
+      margin-right: 8px;
+      color: var(--color-accent);
+    }
+    .contact-card .cta-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .contact-card .cta-group a {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .contact-card .cta-group .tg {
       background: #0088cc;
       color: #fff;
-      padding: 12px 28px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.3s;
-      margin-top: 16px;
-      box-shadow: 0 4px 16px rgba(0, 136, 204, 0.25);
+      box-shadow: 0 4px 16px rgba(0,136,204,0.25);
     }
-    .nexora-telegram:hover {
-      background: #0077b5;
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 8px 32px rgba(0, 136, 204, 0.35);
+    .contact-card .cta-group .tg:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,136,204,0.35);
     }
-    .nexora-telegram i {
-      font-size: 1.2rem;
+    .contact-card .cta-group .phone {
+      background: var(--color-primary);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(26,58,92,0.2);
+    }
+    [data-theme="dark"] .contact-card .cta-group .phone {
+      background: var(--color-accent);
+      color: var(--color-primary);
+      box-shadow: 0 4px 16px rgba(245,197,66,0.2);
+    }
+    .contact-card .cta-group .phone:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(26,58,92,0.3);
+    }
+    [data-theme="dark"] .contact-card .cta-group .phone:hover {
+      box-shadow: 0 8px 24px rgba(245,197,66,0.3);
+    }
+
+    /* ===== FOOTER ===== */
+    .dev-footer {
+      margin-top: 60px;
+      padding: 24px 0;
+      border-top: 1px solid rgba(26,58,92,0.06);
+      text-align: center;
+      color: var(--color-text-secondary);
+      font-size: 0.85rem;
+    }
+    [data-theme="dark"] .dev-footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .dev-footer strong {
+      color: var(--color-text-primary);
+    }
+    .dev-footer .heart {
+      color: #ef4444;
     }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
-      body { padding: 24px 16px; }
-      .header h1 { font-size: 2.2rem; }
-      .card { padding: 24px 20px; }
-      .dev-info { flex-direction: column; align-items: flex-start; }
-      .dev-avatar { width: 72px; height: 72px; font-size: 1.8rem; }
-      .features-grid { grid-template-columns: 1fr 1fr; }
-      .tools-grid { grid-template-columns: repeat(3, 1fr); }
-      .timeline { padding-left: 40px; }
-      .timeline::before { left: 16px; }
-      .pin { left: -30px; width: 20px; height: 20px; }
-      .acknowledgement-card { padding: 24px 20px; }
+      .dev-header { flex-direction: column; gap: 12px; text-align: center; }
+      .dev-hero { padding: 40px 0 20px; }
+      .team-grid { grid-template-columns: 1fr; }
+      .contact-card { flex-direction: column; text-align: center; }
+      .contact-card .cta-group { justify-content: center; }
     }
-    @media (max-width: 500px) {
-      .header h1 { font-size: 1.8rem; }
-      .card h2 { font-size: 1.2rem; }
-      .features-grid { grid-template-columns: 1fr; }
+    @media (max-width: 480px) {
+      .dev-header .logo img { height: 36px; }
+      .dev-header .logo h1 { font-size: 1.2rem; }
+      .dev-hero h2 { font-size: 1.8rem; }
       .tools-grid { grid-template-columns: repeat(2, 1fr); }
-      .nexora-footer { padding: 24px 16px; }
+      .team-card .avatar { width: 80px; height: 80px; font-size: 2.2rem; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <!-- Header -->
-    <div class="header">
-      <h1><i class="fa-solid fa-code"></i> Danfer Development</h1>
-      <p>The story behind the Smart Academic School System</p>
-    </div>
-
-    <!-- Developer Card -->
-    <div class="card">
-      <h2><i class="fa-solid fa-user-gear"></i> Developer</h2>
-      <div class="dev-info">
-        <div class="dev-avatar">
-          <i class="fa-solid fa-user-astronaut"></i>
+    <header class="dev-header">
+      <div class="logo">
+        <!-- Logo with black background and white text – we'll use a text-based logo for simplicity -->
+        <div style="background:#000; padding:6px 16px; border-radius:10px; display:inline-flex; align-items:center; gap:10px;">
+          <span style="color:#fff; font-weight:900; font-size:1.4rem; letter-spacing:-0.5px;">NEXORA</span>
         </div>
-        <div class="dev-details">
-          <p><strong>Name:</strong> Fikir Habtamu</p>
-          <p><strong>Role:</strong> Full‑Stack Developer &amp; Founder of NeXORA</p>
-          <p><strong>Contact:</strong> fikirhabtamu2@gmail.com</p>
-          <div class="bio">
-            Educator turned developer. I built Danfer to replace paper‑based school management with a smart, affordable platform. Every line of code was written with love for Ethiopian schools. 🇪🇹
+        <h1>Dev Team</h1>
+      </div>
+      <div class="back-link">
+        <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="dev-hero">
+      <span class="badge">✨ Built with ❤️</span>
+      <h2>The Minds Behind Danfer</h2>
+      <p>We are a team of passionate student developers committed to transforming education through technology. This platform is our gift to Danfer School and the community.</p>
+      <a href="#team" class="cta-btn">Meet the Team <i class="fa-solid fa-arrow-right"></i></a>
+    </section>
+
+    <!-- Team -->
+    <section id="team">
+      <h2 class="section-title">Our Team</h2>
+      <p class="section-subtitle">Two grade 12 students, one mission: to build the future of education.</p>
+      <div class="team-grid">
+        <!-- Nathanael Mandefro -->
+        <div class="team-card">
+          <div class="avatar"><i class="fa-solid fa-user-astronaut"></i></div>
+          <h3>Nathanael Mandefro</h3>
+          <div class="role">Lead Developer &amp; Co-Founder</div>
+          <div class="bio">Grade 12 student with a passion for full‑stack development. Built the core architecture of Danfer School System.</div>
+          <div class="social-links">
+            <a href="https://t.me/NexoraET" target="_blank" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+            <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          </div>
+        </div>
+
+        <!-- Fikir Habtamu -->
+        <div class="team-card">
+          <div class="avatar"><i class="fa-solid fa-user-graduate"></i></div>
+          <h3>Fikir Habtamu</h3>
+          <div class="role">Developer &amp; Co-Founder</div>
+          <div class="bio">Grade 12 student, creative problem solver. Designed the UI/UX and integrated the AI assistant into the platform.</div>
+          <div class="social-links">
+            <a href="https://t.me/NexoraET" target="_blank" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+            <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Advanced Features -->
-    <div class="card">
-      <h2><i class="fa-solid fa-star"></i> Advanced Features</h2>
-      <div class="features-grid">
-        <div class="feature-item">
-          <i class="fa-solid fa-robot"></i>
-          <h4>AI Assistant</h4>
-          <p>24/7 school helper powered by OpenRouter (supports multiple free models).</p>
-        </div>
-        <div class="feature-item">
-          <i class="fa-solid fa-paint-brush"></i>
-          <h4>Dark/Light Themes</h4>
-          <p>Auto‑saving theme with glassmorphism and smooth transitions.</p>
-        </div>
-        <div class="feature-item">
-          <i class="fa-solid fa-file-pdf"></i>
-          <h4>PDF &amp; Excel</h4>
-          <p>Export student cards, class lists, and marks with one click.</p>
-        </div>
-        <div class="feature-item">
-          <i class="fa-solid fa-comments"></i>
-          <h4>Real‑time Chat</h4>
-          <p>Live school‑wide messaging with admin moderation.</p>
-        </div>
-        <div class="feature-item">
-          <i class="fa-solid fa-chart-line"></i>
-          <h4>Ranking &amp; Stats</h4>
-          <p>Automatic class rank, subject averages, and visual charts.</p>
-        </div>
-        <div class="feature-item">
-          <i class="fa-solid fa-gamepad"></i>
-          <h4>Games</h4>
-          <p>Built‑in Tic‑Tac‑Toe, Car Dodger, and Math Challenge for students.</p>
-        </div>
-        <div class="feature-item">
-          <i class="fa-solid fa-shield-halved"></i>
-          <h4>Secure API Keys</h4>
-          <p>No sensitive keys in client‑side code – stored safely in Firestore.</p>
-        </div>
-        <div class="feature-item">
-          <i class="fa-solid fa-globe"></i>
-          <h4>Multilingual</h4>
-          <p>English, Amharic, and Oromo support throughout the platform.</p>
-        </div>
-      </div>
-    </div>
+    </section>
 
     <!-- Tools & Technologies -->
-    <div class="card">
-      <h2><i class="fa-solid fa-toolbox"></i> Tools &amp; Technologies</h2>
+    <section style="margin-top: 48px;">
+      <h2 class="section-title">Tools &amp; Technologies</h2>
+      <p class="section-subtitle">The stack that powers Danfer School System.</p>
       <div class="tools-grid">
-        <div class="tool-item"><i class="fa-brands fa-html5"></i> HTML5 <span>Structure</span></div>
-        <div class="tool-item"><i class="fa-brands fa-css3-alt"></i> CSS3 <span>Glassmorphism</span></div>
-        <div class="tool-item"><i class="fa-brands fa-js"></i> JavaScript <span>Interactivity</span></div>
-        <div class="tool-item"><i class="fa-solid fa-fire"></i> Firebase <span>Auth &amp; Firestore</span></div>
-        <div class="tool-item"><i class="fa-solid fa-chart-bar"></i> Chart.js <span>Statistics</span></div>
-        <div class="tool-item"><i class="fa-solid fa-file-pdf"></i> jsPDF <span>PDF Export</span></div>
-        <div class="tool-item"><i class="fa-solid fa-file-excel"></i> SheetJS <span>Excel Import</span></div>
-        <div class="tool-item"><i class="fa-solid fa-font-awesome"></i> Font Awesome <span>Icons</span></div>
-        <div class="tool-item"><i class="fa-solid fa-robot"></i> OpenRouter <span>AI Models</span></div>
-        <div class="tool-item"><i class="fa-brands fa-github"></i> GitHub <span>Hosting &amp; CI</span></div>
+        <div class="tool-item"><i class="fa-brands fa-html5"></i><span>HTML5</span></div>
+        <div class="tool-item"><i class="fa-brands fa-css3-alt"></i><span>CSS3</span></div>
+        <div class="tool-item"><i class="fa-brands fa-js"></i><span>JavaScript</span></div>
+        <div class="tool-item"><i class="fa-solid fa-fire"></i><span>Firebase</span></div>
+        <div class="tool-item"><i class="fa-solid fa-chart-bar"></i><span>Chart.js</span></div>
+        <div class="tool-item"><i class="fa-solid fa-file-pdf"></i><span>jsPDF</span></div>
+        <div class="tool-item"><i class="fa-solid fa-file-excel"></i><span>SheetJS</span></div>
+        <div class="tool-item"><i class="fa-solid fa-robot"></i><span>OpenRouter AI</span></div>
+        <div class="tool-item"><i class="fa-brands fa-font-awesome"></i><span>Font Awesome</span></div>
+        <div class="tool-item"><i class="fa-brands fa-github"></i><span>GitHub</span></div>
       </div>
-    </div>
+    </section>
 
-    <!-- Development Progress Timeline -->
-    <div class="card">
-      <h2><i class="fa-solid fa-timeline"></i> Development Timeline</h2>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="pin"></div>
-          <div class="timeline-card">
-            <h3>Phase 1 – Foundation 🏗️</h3>
-            <p>Concept, Firebase setup, authentication, dark/light theme, responsive layout, and the home page. Built the core structure that everything else stands on.</p>
-          </div>
+    <!-- Contact -->
+    <section style="margin-top: 48px;">
+      <h2 class="section-title">Contact Us</h2>
+      <p class="section-subtitle">Have questions or ideas? Reach out to the team.</p>
+      <div class="contact-card">
+        <div class="info">
+          <div class="label">📞 Phone</div>
+          <div class="value"><i class="fa-solid fa-phone"></i> 0940099073</div>
         </div>
-        <div class="timeline-item">
-          <div class="pin"></div>
-          <div class="timeline-card">
-            <h3>Phase 2 – User Management 👥</h3>
-            <p>Admin, teacher, and student dashboards. Role‑based access control, class &amp; subject management, and teacher code system.</p>
-          </div>
+        <div class="info">
+          <div class="label">✉️ Telegram</div>
+          <div class="value"><i class="fa-brands fa-telegram"></i> @NexoraET</div>
         </div>
-        <div class="timeline-item">
-          <div class="pin"></div>
-          <div class="timeline-card">
-            <h3>Phase 3 – Core Features ⚙️</h3>
-            <p>Permission requests, announcements, real‑time chat, result checking, class ranking, and PDF/Excel exports. The platform became truly useful.</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="pin"></div>
-          <div class="timeline-card">
-            <h3>Phase 4 – AI &amp; Smart Tools 🤖</h3>
-            <p>Integrated the AI assistant with dynamic API key storage (no hardcoded keys!), added games, and polished the glassmorphism UI.</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="pin"></div>
-          <div class="timeline-card">
-            <h3>Phase 5 – Security &amp; Hardening 🔒</h3>
-            <p>Fixed Firestore rules, secured API keys behind admin panel, danger zone reset, and bug‑fixing marathon. All files cleaned for production.</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="pin"></div>
-          <div class="timeline-card">
-            <h3>Phase 6 – Launch &amp; Beyond 🚀</h3>
-            <p>Hosted on GitHub, deployed globally, and continuously improved based on user feedback. Next: mobile app with React Native?</p>
-          </div>
+        <div class="cta-group">
+          <a href="tel:+251940099073" class="phone"><i class="fa-solid fa-phone"></i> Call Us</a>
+          <a href="https://t.me/NexoraET" target="_blank" class="tg"><i class="fa-brands fa-telegram"></i> Telegram</a>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Acknowledgements -->
-    <div class="acknowledgement-card">
-      <h2><i class="fa-solid fa-heart"></i> Acknowledgements</h2>
-      <p>“First and foremost, I thank <strong>GOD</strong> for the wisdom, strength, and guidance throughout this journey. Without His grace, nothing would be possible.</p>
-      <p>I am deeply grateful to <strong>my teacher</strong> who entrusted us with this project and inspired us to push beyond our limits. Your belief in us made Danfer a reality.</p>
-      <p>To <strong>my family</strong> – thank you for your endless patience, encouragement, and love. You are my foundation.</p>
-      <p>And a special shout‑out to <strong>Speed</strong> – your help, motivation, and late‑night debug sessions kept this project alive. You’re a legend.”</p>
-    </div>
-
-    <!-- Powered by Nexora -->
-    <div class="nexora-footer">
-      <img src="dev.png" alt="Nexora Logo" onerror="this.style.display='none'">
-      <h3>Powered by Nexora</h3>
-      <p>Innovative digital solutions for education</p>
-      <a href="https://t.me/nexoraET" target="_blank" class="nexora-telegram">
-        <i class="fa-brands fa-telegram"></i> @nexoraET
-      </a>
-    </div>
-
-    <!-- NO BACK BUTTON – removed as requested -->
+    <!-- Footer -->
+    <footer class="dev-footer">
+      <p>
+        <span class="heart">❤</span> Built with passion by <strong>Nathanael Mandefro</strong> &amp; <strong>Fikir Habtamu</strong>
+        <span class="heart">❤</span><br>
+        &copy; 2025 Nexora – Innovating Education
+      </p>
+    </footer>
   </div>
 </body>
 </html>
